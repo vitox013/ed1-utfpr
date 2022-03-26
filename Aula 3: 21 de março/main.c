@@ -16,7 +16,6 @@ typedef struct no{
 typedef struct{
     No *prim;
     No *fim;
-    int tam;
 }Fila;
 
 void criar_fila(Fila *fila);
@@ -73,7 +72,6 @@ int main(){
 void criar_fila(Fila *fila){
     fila->prim = NULL;
     fila->fim = NULL;
-    fila->tam = 0;
 }
 
 void preencher_e_inserir(char f[], Fila *fila){
@@ -108,7 +106,6 @@ void preencher_e_inserir(char f[], Fila *fila){
                     fila->fim->proximo = novo;
                     fila->fim = novo;
                 }
-                fila->tam++;
             }
             else
                 printf("\nNao foi possivel alocar memoria!");
