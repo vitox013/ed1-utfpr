@@ -19,83 +19,109 @@ typedef struct{
     int tam;
 }Fila;
 
+void criar_fila(Fila *fila);
+
+void preencher_e_inserir(char f[], Fila *fila);
+
+void imprimir_pessoa(Pessoa p);
+
+void imprimir_fila(Fila *fila);
+
+void opcao_arquivo(char *nome);
+
+
+
+int main(){
+
+    Fila fila;
+    int opcao;
+    char nome[15] = {};
+    
+
+    criar_fila(&fila);
+
+    do{
+        printf("\n0 - Sair\n1 - Inserir na lista a partir do arquivo\n2 - Imprimir lista preenchida\n\n");
+        scanf("%d", &opcao);
+        
+        
+        switch(opcao){
+        case 1:
+            if(fila.prim == NULL){
+                opcao_arquivo(nome);
+                preencher_e_inserir(nome, &fila);
+                printf("\nLISTA PREENCHIDA COM SUCESSO!\n"); 
+            }   
+            else
+                printf("\nERRO! LISTA JA FOI PREENCHIDA!");
+        break;
+
+        case 2:
+            imprimir_fila(&fila);
+        break;
+
+        default:
+            if(opcao != 0)
+                printf("\nOpcao invalida!");
+        }
+    }while(opcao != 0);
+
+    return 0;
+}
+
+
 void criar_fila(Fila *fila){
     fila->prim = NULL;
     fila->fim = NULL;
     fila->tam = 0;
 }
 
-void ler_lista(char f[], Pessoa *p){
-    FILE *arquivo = fopen(f, "r");
+void preencher_e_inserir(char f[], Fila *fila){
+
     char copia_linha[50];
     char linhaCompleta[50];
+    Pessoa pessoa;
     char *rg;
-    int i = 0;
+    FILE *arquivo = fopen(f, "r");
 
     if(arquivo){
         while(fgets(linhaCompleta, 50, arquivo)){
             strcpy(copia_linha, linhaCompleta);
-            strcpy(p[i].nome, strtok(linhaCompleta, ",") );
+            strcpy(pessoa.nome, strtok(linhaCompleta, ",") );
 
             rg = strtok(copia_linha, ",");
             while(rg){
-                strcpy(p[i].rg, rg);
+                strcpy(pessoa.rg, rg);
                 rg = strtok(NULL, ",");
             }
-        i++;
+
+            No *novo = malloc(sizeof(No));
+
+            if(novo){
+                novo->p = pessoa;
+                novo->proximo = NULL;
+                if(fila->prim == NULL){
+                    fila->prim = novo;
+                    fila->fim = novo;
+                }
+                else{
+                    fila->fim->proximo = novo;
+                    fila->fim = novo;
+                }
+                fila->tam++;
+            }
+            else
+                printf("\nNao foi possivel alocar memoria!");
         }
-        printf("\n----LISTA LIDA COM SUCESSO!----\n");
         fclose(arquivo);
     }
     else
         printf("\nERRO ao abrir o arquivo!");
-
-}
-
-void inserir_na_lista(Fila *fila, Pessoa *p){
-
-    int i;
-
-    for(i = 0; i < 10; i++){
-        No *novo = malloc(sizeof(No));
-        if(novo){
-            novo->p = p[i];
-            novo->proximo = NULL;
-            if(fila->prim == NULL){
-                fila->prim = novo;
-                fila->fim = novo;
-            }
-            else{
-                fila->fim->proximo = novo;
-                fila->fim = novo;
-            }
-                fila->tam++;
-        }
-        else
-            printf("\nNao foi possivel alocar memoria!");
-    }
-    printf("\nLISTA PREENCHIDA COM SUCESSO!\n");
-}
-
-No* remover_da_fila(Fila *fila){
-    No *remover = NULL;
-
-    if(fila->prim){
-        remover = fila->prim;
-        fila->prim = remover->proximo;
-        fila->tam--;
-    }
-    else
-        printf("\tFila vazia!");
-    return remover;
 }
 
 void imprimir_pessoa(Pessoa p){
     printf("\nNome: %s\nRg: %s\n", p.nome, p.rg);
 }
-
-
-
 
 void imprimir_fila(Fila *fila){
     No *aux = fila->prim;
@@ -104,53 +130,49 @@ void imprimir_fila(Fila *fila){
         imprimir_pessoa(aux->p);
         aux = aux->proximo;
     }
-    printf("\n-------------------Fim Fila-----------\n");
+    printf("\n\t-------------------Fim Fila-----------\n");
 
 }
 
-int main(){
-    No *remover;
-    Pessoa p[10];
-    Fila fila;
-    int opcao;
-    char nome[] = {"NomeRG10.txt"};
+void opcao_arquivo(char *nome){
 
-    criar_fila(&fila);
+    char opcao_arq;
 
-    do{
-        printf("\n0 - Sair\n1 - Ler lista de um arquivo\n2 - Colocar na lista sequencial\n3 - Imprimir lista preenchida\n4 - Remover elemento da lista\n\n");
-        scanf("%d", &opcao);
-        getchar();
+    printf("\nQual arquivo?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
+    scanf(" %c", &opcao_arq);
 
-        switch(opcao){
-        case 1:
-            ler_lista(nome, p);
-            break;
-        case 2:
-            inserir_na_lista(&fila, p);
-            break;
-        case 3:
-            imprimir_fila(&fila);
-            break;
-        case 4:
-            remover = remover_da_fila(&fila);
-            if(remover){
-                printf("\nElemento removido com sucesso!\n");
-                imprimir_pessoa(remover->p);
+    switch(opcao_arq){
+    case 'a':
+        strcpy(nome, "NomeRG10.txt");
+    break;
 
-                free(remover);
-            }
-            else{}
+    case 'b':
+        strcpy(nome, "NomeRG50.txt");
+    break;
 
-            break;
+    case 'c':
+        strcpy(nome, "NomeRG100.txt");
+    break;
 
-        default:
-            if(opcao != 0)
-                printf("\nOpcao invalida!");
-        }
-    }while(opcao != 0);
+    case 'd':
+        strcpy(nome, "NomeRG1K.txt");
+    break;
 
+    case 'e':
+        strcpy(nome, "NomeRG10K.txt");
+    break;
 
+    case 'f':
+        strcpy(nome, "NomeRG1M.txt");
+    break;
 
-    return 0;
+    case 'g':
+        strcpy(nome, "NomeRG100M.txt");
+    break;    
+
+    default:
+        if(opcao_arq < 'a' || opcao_arq > 103);
+            printf("Opcao invalida!");
+    break;
+    }
 }

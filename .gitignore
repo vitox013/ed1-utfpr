@@ -1,2 +1,7 @@
 .vscode/
 a.out
+<<<<<<< HEAD
+=======
+.gitignore
+
+>>>>>>> master
