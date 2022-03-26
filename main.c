@@ -19,6 +19,57 @@ typedef struct{
     int tam;
 }Fila;
 
+void criar_fila(Fila *fila);
+
+void preencher_e_inserir(char f[], Fila *fila);
+
+void imprimir_pessoa(Pessoa p);
+
+void imprimir_fila(Fila *fila);
+
+void opcao_arquivo(char *nome);
+
+
+
+int main(){
+
+    Fila fila;
+    int opcao;
+    char nome[15] = {};
+    
+
+    criar_fila(&fila);
+
+    do{
+        printf("\n0 - Sair\n1 - Inserir na lista a partir do arquivo\n2 - Imprimir lista preenchida\n\n");
+        scanf("%d", &opcao);
+        
+        
+        switch(opcao){
+        case 1:
+            if(fila.prim == NULL){
+                opcao_arquivo(nome);
+                preencher_e_inserir(nome, &fila);
+                printf("\nLISTA PREENCHIDA COM SUCESSO!\n"); 
+            }   
+            else
+                printf("\nERRO! LISTA JA FOI PREENCHIDA!");
+        break;
+
+        case 2:
+            imprimir_fila(&fila);
+        break;
+
+        default:
+            if(opcao != 0)
+                printf("\nOpcao invalida!");
+        }
+    }while(opcao != 0);
+
+    return 0;
+}
+
+
 void criar_fila(Fila *fila){
     fila->prim = NULL;
     fila->fim = NULL;
@@ -83,9 +134,14 @@ void imprimir_fila(Fila *fila){
 
 }
 
-void opcao_arquivo(char *nome, char letra){
+void opcao_arquivo(char *nome){
 
-    switch(letra){
+    char opcao_arq;
+
+    printf("\nQual arquivo?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
+    scanf(" %c", &opcao_arq);
+
+    switch(opcao_arq){
     case 'a':
         strcpy(nome, "NomeRG10.txt");
     break;
@@ -115,49 +171,8 @@ void opcao_arquivo(char *nome, char letra){
     break;    
 
     default:
-        if(letra < 'a' || letra > 103);
+        if(opcao_arq < 'a' || opcao_arq > 103);
             printf("Opcao invalida!");
     break;
     }
-}
-
-
-int main(){
-
-    Fila fila;
-    int opcao;
-    char nome[15] = {};
-    char opcao_arq;
-
-    criar_fila(&fila);
-
-    do{
-        printf("\n0 - Sair\n1 - Inserir na lista a partir do arquivo\n2 - Imprimir lista preenchida\n\n");
-        scanf("%d", &opcao);
-        
-        
-        switch(opcao){
-        case 1:
-            if(fila.prim == NULL){
-                printf("\nQual arquivo?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
-                scanf(" %c", &opcao_arq);
-                opcao_arquivo(nome, opcao_arq);
-                preencher_e_inserir(nome, &fila);
-                printf("\nLISTA PREENCHIDA COM SUCESSO!\n"); 
-            }   
-            else
-                printf("\nERRO! LISTA JA FOI PREENCHIDA!");
-        break;
-
-        case 2:
-            imprimir_fila(&fila);
-        break;
-
-        default:
-            if(opcao != 0)
-                printf("\nOpcao invalida!");
-        }
-    }while(opcao != 0);
-
-    return 0;
 }
