@@ -168,7 +168,7 @@ void opcao_arquivo(char *nome){
     break;    
 
     default:
-        if(opcao_arq < 'a' || opcao_arq > 103);
+        if(opcao_arq < 'a' || opcao_arq > 103)
             printf("Opcao invalida!");
     break;
     }
