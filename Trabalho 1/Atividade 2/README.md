@@ -1,9 +1,6 @@
 Trabalho 1 - Lista de clientes
 
-    1. Faça um programa que use as duas formas de armazenar os dados em paralelo e mostre a diferença de tempo entre cada ação realizada nas duas listas.
-       a) Lista sequencial
-       b) Lista encadeada
-    2) Cada dado consiste dos campos de nome e RG.
+     2) Cada dado consiste dos campos de nome e RG.
         a) O usuario pode ficar escolhendo entre as funções:
             Inserção de um nó no início da lista e apresentar Nome, RG, C(n), M(n), Tempo de execução e sua posição N na lista.
             Inserção de um nó no fim da lista e apresentar Nome, RG, C(n), M(n), Tempo de execução e sua posição N na lista.
