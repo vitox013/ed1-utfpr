@@ -108,7 +108,7 @@ void preencher_e_inserir(char f[], Fila *fila){
                 }
             }
             else
-                printf("\nNao foi possivel alocar memoria!");
+                printf("\nNao foi possivel alocar memoria!\n");
         }
         fclose(arquivo);
     }
