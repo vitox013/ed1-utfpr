@@ -3,61 +3,41 @@
 #include <string.h>
 
 typedef struct{
-    char nome[25];
+    char nome[20];
     char rg[8];
 }Pessoa;
 
 typedef struct no{
     Pessoa p;
     struct no *proximo;
-
 }No;
 
-typedef struct{
-    No *prim;
-    No *fim;
-    int tam;
-}Fila;
+void ler_arquivo_e_inserir(char fname[], No **lista);
 
-void criar_fila(Fila *fila);
-
-void preencher_e_inserir(char f[], Fila *fila);
-
-void imprimir_pessoa(Pessoa p);
-
-void imprimir_fila(Fila *fila);
+void imprimir(No *no);
 
 void opcao_arquivo(char *nome);
 
-
-
 int main(){
 
-    Fila fila;
+    char nome[20] = {};
+    No *lista = NULL;
     int opcao;
-    char nome[15] = {};
-    
-
-    criar_fila(&fila);
 
     do{
         printf("\n0 - Sair\n1 - Inserir na lista a partir do arquivo\n2 - Imprimir lista preenchida\n\n");
         scanf("%d", &opcao);
-        
-        
+
+
         switch(opcao){
         case 1:
-            if(fila.prim == NULL){
-                opcao_arquivo(nome);
-                preencher_e_inserir(nome, &fila);
-                printf("\nLISTA PREENCHIDA COM SUCESSO!\n"); 
-            }   
-            else
-                printf("\nERRO! LISTA JA FOI PREENCHIDA!");
+            opcao_arquivo(nome);
+            ler_arquivo_e_inserir(nome, &lista);
+            printf("\nLista inserida com sucesso!");
         break;
 
         case 2:
-            imprimir_fila(&fila);
+            imprimir(lista);
         break;
 
         default:
@@ -69,20 +49,12 @@ int main(){
     return 0;
 }
 
-
-void criar_fila(Fila *fila){
-    fila->prim = NULL;
-    fila->fim = NULL;
-    fila->tam = 0;
-}
-
-void preencher_e_inserir(char f[], Fila *fila){
-
-    char copia_linha[50];
-    char linhaCompleta[50];
+void ler_arquivo_e_inserir(char fname[], No **lista){
+    FILE *arquivo = fopen(fname, "r");
     Pessoa pessoa;
+    char copia_linha[17];
+    char linhaCompleta[17];
     char *rg;
-    FILE *arquivo = fopen(f, "r");
 
     if(arquivo){
         while(fgets(linhaCompleta, 50, arquivo)){
@@ -90,48 +62,45 @@ void preencher_e_inserir(char f[], Fila *fila){
             strcpy(pessoa.nome, strtok(linhaCompleta, ",") );
 
             rg = strtok(copia_linha, ",");
+
             while(rg){
                 strcpy(pessoa.rg, rg);
                 rg = strtok(NULL, ",");
             }
 
-            No *novo = malloc(sizeof(No));
+            No *aux, *novo = malloc(sizeof(No));
 
             if(novo){
                 novo->p = pessoa;
                 novo->proximo = NULL;
-                if(fila->prim == NULL){
-                    fila->prim = novo;
-                    fila->fim = novo;
-                }
+
+                if(*lista == NULL)
+                    *lista = novo;
                 else{
-                    fila->fim->proximo = novo;
-                    fila->fim = novo;
+                    aux = *lista;
+                    while(aux->proximo)
+                        aux = aux->proximo;
+                    aux->proximo = novo;
                 }
-                fila->tam++;
             }
             else
-                printf("\nNao foi possivel alocar memoria!");
+                printf("Erro ao alocar memoria!");
         }
-        fclose(arquivo);
     }
     else
-        printf("\nERRO ao abrir o arquivo!");
+        printf("\nERRO AO ABRIR O ARQUIVO!");
+
+    fclose(arquivo);
+
 }
 
-void imprimir_pessoa(Pessoa p){
-    printf("\nNome: %s\nRg: %s\n", p.nome, p.rg);
-}
-
-void imprimir_fila(Fila *fila){
-    No *aux = fila->prim;
-    printf("\n-------------------Fila-----------\n\t");
-    while(aux){
-        imprimir_pessoa(aux->p);
-        aux = aux->proximo;
+void imprimir(No *no){
+    printf("\n\tLista: ");
+    while(no){
+        printf("\nNome: %s\nRg: %s\n", no->p.nome, no->p.rg);
+        no = no->proximo;
     }
-    printf("\n\t-------------------Fim Fila-----------\n");
-
+    printf("\n\n");
 }
 
 void opcao_arquivo(char *nome){
@@ -168,10 +137,10 @@ void opcao_arquivo(char *nome){
 
     case 'g':
         strcpy(nome, "NomeRG100M.txt");
-    break;    
+    break;
 
     default:
-        if(opcao_arq < 'a' || opcao_arq > 103);
+        if(opcao_arq < 'a' || opcao_arq > 103)
             printf("Opcao invalida!");
     break;
     }
