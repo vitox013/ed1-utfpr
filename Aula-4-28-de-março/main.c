@@ -20,7 +20,7 @@ void opcao_arquivo(char *nome);
 
 int main(){
 
-    char nome[20] = {"NomeRG10.txt"};
+    char nome[20] = {};
     No *lista = NULL;
     int opcao;
 
