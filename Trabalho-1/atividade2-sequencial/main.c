@@ -80,16 +80,15 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ //1) a. Lista sequencial(fil
 
 
 void inserir_inicio(Fila *fila){ //I
-    No  *novo = malloc(sizeof(No));
+    No *aux, *novo = malloc(sizeof(No));
     Pessoa pessoa;
     nome_e_rg(&pessoa);
 
     novo->p = pessoa;
     novo->proximo = NULL;
-    fila->fim = fila->prim;
+    aux = fila->prim;
     fila->prim = novo; 
-    fila->prim->proximo = fila->fim;
-    fila->fim = NULL;
+    fila->prim->proximo = aux;
     fila->tam++;
 }
 
