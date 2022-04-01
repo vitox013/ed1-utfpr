@@ -143,18 +143,17 @@ void remover_do_inicio(Fila *fila){ //IV
 }
 
 void remover_do_fim(Fila *fila){ //V 
-    No *remover = NULL, *aux = NULL, *aux_prim_no;
-    int tam = fila->tam - 2;
+    No *remover = NULL, *aux = NULL;
+    int tam = fila->tam -1;
     int i;
-    aux_prim_no = fila->prim;
+
+    
     aux = fila->prim;
     remover = fila->fim;
-
     for(i = 1; i < tam; i++)
         aux = aux->proximo;
+    aux->proximo = NULL;
     fila->fim = aux;
-    fila->fim->proximo = NULL;
-    fila->prim = aux_prim_no;
     fila->tam--;
         
     printf("\n----ELEMENTO REMOVIDO DO FIM----\n");
