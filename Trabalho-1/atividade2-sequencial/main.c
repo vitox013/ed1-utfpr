@@ -104,24 +104,29 @@ void inserir_fim(Fila *fila){ // II
     fila->fim->proximo = novo;
     fila->fim = novo;
 }
-/*
-void inserir_posicao_n(Fila *fila){ III
-    No *novo = malloc(sizeof(No));
+
+
+void inserir_posicao_n(Fila *fila){ //III
+    No *novo = malloc(sizeof(No)), *aux = NULL;
     Pessoa pessoa;
-    int tam = 1, n;
+    int i, n;
+    
     nome_e_rg(&pessoa);
     printf("\nQual posicao deseja inserir?\n");
     scanf("%d", &n);
 
+    aux = fila->prim;
     novo->p = pessoa;
     novo->proximo = NULL;
-    while(tam != n){
-        fila->prim = fila->prim->proximo;
-        tam++;
-    }
+    for(i = 2; i < n; i++)
+        aux = aux->proximo;
+    novo->proximo = aux->proximo;
+    aux->proximo = novo;
+    fila->tam++;
     
+    printf("\nNo inserido com sucesso na %d° posicao!\n\n", n);
 }
-*/
+
 
 void remover_do_inicio(Fila *fila){ //IV 
     No *remover = NULL;
@@ -137,7 +142,7 @@ void remover_do_inicio(Fila *fila){ //IV
         printf("\nFILA VAZIA!\n");
 }
 
-void remover_do_fim(Fila *fila){ //IV 
+void remover_do_fim(Fila *fila){ //V 
     No *remover = NULL, *aux = NULL, *aux_prim_no;
     int tam = fila->tam - 2;
     int i;
@@ -145,7 +150,7 @@ void remover_do_fim(Fila *fila){ //IV
     aux = fila->prim;
     remover = fila->fim;
 
-    for(i = 0; i < tam; i++)
+    for(i = 1; i < tam; i++)
         aux = aux->proximo;
     fila->fim = aux;
     fila->fim->proximo = NULL;
@@ -206,7 +211,7 @@ int main(){
             inserir_fim(&fila);
             break;
         case 3:
-            //inserir_posicao_n(&fila);
+            inserir_posicao_n(&fila);
             break;
         case 4:
             remover_do_inicio(&fila); 
