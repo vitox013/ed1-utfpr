@@ -4,7 +4,7 @@
 
 typedef struct{
     char nome[20];
-    char rg[9];
+    char rg[8];
 }Pessoa;
 
 typedef struct no
@@ -183,6 +183,36 @@ void remover_posicao_n(Fila *fila){ // VI
     }
 }
 
+void procurar_no(Fila *fila){
+    No *aux = NULL;
+
+    int rg_int;
+    char rg[8];
+
+    getchar();
+    printf("\nDigite o RG que esta procurando: ");
+    scanf("%d", &rg_int);
+
+    sprintf(rg, "%d", rg_int);
+    
+    aux = fila->prim;
+    if(strcmp(aux->p.rg, rg) == 0){
+        printf("\nPessoa encontrada!\n");
+        printf("Nome: %s\n", aux->p.nome);
+    }
+    else{
+
+        while(aux->proximo){
+            aux = aux->proximo;
+            if(strcmp(aux->p.rg, rg) == 0){
+                printf("\nPessoa encontrada!\n");
+                printf("Nome: %s\n\n", aux->p.nome);
+                break;
+            }
+        } 
+    }
+}
+
 void imprimir_fila(Fila *fila){ //XIII 
     No *aux = fila->prim;
     printf("\n-----------FILA TAM:%d------------\n", fila->tam);
@@ -215,14 +245,16 @@ int main(){
 
     do
     {
-        printf("\n0 - Sair\n");
+        
         printf("1 - Inserir um no no INICIO\n");
         printf("2 - Inserir um no no FINAL\n");
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
         printf("5 - Retirar um no do FIM\n");
         printf("6 - Retirar um no na POSICAO N\n");
-        printf("8 - Mostrar lista na tela\n\n");
+        printf("7 - Procurar no por RG\n");
+        printf("8 - Mostrar lista na tela\n");
+        printf("\n11 - Sair\n\n");
         scanf("%d", &opcao);
         switch (opcao)
         {
@@ -243,6 +275,9 @@ int main(){
             break;    
         case 6:
             remover_posicao_n(&fila);
+            break;
+        case 7:
+            procurar_no(&fila);
             break;
         case 8:
             imprimir_fila(&fila);    
