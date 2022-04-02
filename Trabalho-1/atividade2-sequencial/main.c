@@ -78,7 +78,6 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ //1) a. Lista sequencial(fil
         printf("\nErro ao abrir arquivo!\n");    
 }
 
-
 void inserir_inicio(Fila *fila){ //I
     No *aux, *novo = malloc(sizeof(No));
     Pessoa pessoa;
@@ -104,7 +103,6 @@ void inserir_fim(Fila *fila){ // II
     fila->fim = novo;
 }
 
-
 void inserir_posicao_n(Fila *fila){ //III
     No *novo = malloc(sizeof(No)), *aux = NULL;
     Pessoa pessoa;
@@ -125,7 +123,6 @@ void inserir_posicao_n(Fila *fila){ //III
     
     printf("\nNo inserido com sucesso na %d° posicao!\n\n", n);
 }
-
 
 void remover_do_inicio(Fila *fila){ //IV 
     No *remover = NULL;
@@ -158,6 +155,32 @@ void remover_do_fim(Fila *fila){ //V
     printf("\n----ELEMENTO REMOVIDO DO FIM----\n");
     printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
     
+}
+
+void remover_posicao_n(Fila *fila){ // VI
+    No *novo = malloc(sizeof(No)), *aux = NULL, *remover = NULL, *proximo_no = NULL;
+    int i, n;
+    
+    printf("\nQual posicao deseja remover?\n");
+    scanf("%d", &n);
+
+    if(n == 1){
+        remover_do_inicio(fila);
+    }
+    else{
+        novo->proximo = NULL;
+        aux = fila->prim;
+        for(i = 2; i < n; i++)
+            aux = aux->proximo;
+        remover = aux->proximo;
+        proximo_no = aux->proximo->proximo;
+        aux->proximo = novo->proximo;
+        aux->proximo = proximo_no;
+        fila->tam--;
+    
+    printf("\n----ELEMENTO REMOVIDO DA %d POSICAO----\n", n);
+    printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
+    }
 }
 
 void imprimir_fila(Fila *fila){ //XIII 
@@ -198,6 +221,7 @@ int main(){
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
         printf("5 - Retirar um no do FIM\n");
+        printf("6 - Retirar um no na POSICAO N\n");
         printf("8 - Mostrar lista na tela\n\n");
         scanf("%d", &opcao);
         switch (opcao)
@@ -217,6 +241,9 @@ int main(){
         case 5:
             remover_do_fim(&fila);
             break;    
+        case 6:
+            remover_posicao_n(&fila);
+            break;
         case 8:
             imprimir_fila(&fila);    
            break;
