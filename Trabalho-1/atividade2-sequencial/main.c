@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+int m = 0;
+int c = 0;
+
 typedef struct{
     char nome[20];
     char rg[9];
@@ -37,8 +40,7 @@ void nome_e_rg(Pessoa *p){
     getchar();
     printf("\nDigite o RG (8 digitos): ");
     fgets(p->rg, 9, stdin);
-    //scanf("%8[^n]",p->rg);
-    verificar_enter_rg(&p);
+    verificar_enter_rg(p);
 }
 
 void criar_fila(Fila *fila){
@@ -93,15 +95,23 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ //1) a. Lista sequencial(fil
 }
 
 void inserir_inicio(Fila *fila){ //I
-    No *aux, *novo = malloc(sizeof(No));
+    No *aux, *prim_no, *novo = malloc(sizeof(No));
     Pessoa pessoa;
     nome_e_rg(&pessoa);
 
     novo->p = pessoa;
     novo->proximo = NULL;
-    aux = fila->prim;
-    fila->prim = novo; 
-    fila->prim->proximo = aux;
+
+    if(fila->prim == NULL){
+        fila->prim = novo;
+        fila->fim = novo;
+    }
+    else{
+        aux = fila->prim;
+        fila->prim = novo; 
+        fila->prim->proximo = aux;
+        m++;
+    }
     fila->tam++;
 }
 
@@ -128,6 +138,7 @@ void inserir_posicao_n(Fila *fila){ //III
     scanf("%d", &n);
 
     aux = fila->prim;
+    m++;
     novo->p = pessoa;
     novo->proximo = NULL;
     for(i = 2; i < n; i++)
@@ -160,9 +171,13 @@ void remover_do_fim(Fila *fila){ //V
 
     
     aux = fila->prim;
+    m++;
     remover = fila->fim;
-    for(i = 1; i < tam; i++)
+    m++;
+    for(i = 1; i < tam; i++){
         aux = aux->proximo;
+        m++;
+    }
     aux->proximo = NULL;
     fila->fim = aux;
     fila->tam--;
@@ -185,10 +200,15 @@ void remover_posicao_n(Fila *fila){ // VI
     else{
         novo->proximo = NULL;
         aux = fila->prim;
-        for(i = 2; i < n; i++)
+        m++;
+        for(i = 2; i < n; i++){
             aux = aux->proximo;
+            m++;
+        }
         remover = aux->proximo;
+        m++;
         proximo_no = aux->proximo->proximo;
+        m++;
         aux->proximo = novo->proximo;
         aux->proximo = proximo_no;
         fila->tam--;
@@ -211,6 +231,7 @@ void procurar_no(Fila *fila){ //XII
     sprintf(rg, "%d", rg_int);
     
     aux = fila->prim;
+    m++;
     if(strcmp(aux->p.rg, rg) == 0){
         printf("\nPessoa encontrada!\n");
         printf("Nome: %s\n", aux->p.nome);
@@ -219,6 +240,7 @@ void procurar_no(Fila *fila){ //XII
 
         while(aux->proximo){
             aux = aux->proximo;
+            m++;
             if(strcmp(aux->p.rg, rg) == 0){
                 printf("\nPessoa encontrada!\n");
                 printf("Nome: %s\n\n", aux->p.nome);
@@ -230,10 +252,12 @@ void procurar_no(Fila *fila){ //XII
 
 void imprimir_fila(Fila *fila){ //XIII 
     No *aux = fila->prim;
+    m++;
     printf("\n-----------FILA TAM:%d------------\n", fila->tam);
     while(aux){
         printf("Nome: %s\nRg: %s\n\n", aux->p.nome, aux->p.rg);
         aux = aux->proximo;
+        m++;
     }
     printf("\n-----------FIM FILA TAM:%d-----------\n\n", fila->tam);
 }
@@ -241,12 +265,14 @@ void imprimir_fila(Fila *fila){ //XIII
 void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
     FILE *arquivo = fopen(nome_lista, "w");
     No *aux = fila->prim;
+    m++;
 
     if(arquivo){
 
         while(aux){
             fprintf(arquivo,"%s,%s\n", aux->p.nome, aux->p.rg);
             aux = aux->proximo;
+            m++;
         }
        
         fclose(arquivo);
@@ -255,25 +281,58 @@ void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
         printf("\nErro ao abrir o arquivo!\n\n");
 }
 
+void opcao_arquivo(char *nome){
 
+    char opcao_arq;
 
+    printf("\nQual arquivo?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
+    scanf(" %c", &opcao_arq);
+
+    switch(opcao_arq){
+    case 'a':
+        strcpy(nome, "NomeRG10.txt");
+    break;
+
+    case 'b':
+        strcpy(nome, "NomeRG50.txt");
+    break;
+
+    case 'c':
+        strcpy(nome, "NomeRG100.txt");
+    break;
+
+    case 'd':
+        strcpy(nome, "NomeRG1K.txt");
+    break;
+
+    case 'e':
+        strcpy(nome, "NomeRG10K.txt");
+    break;
+
+    case 'f':
+        strcpy(nome, "NomeRG1M.txt");
+    break;
+
+    case 'g':
+        strcpy(nome, "NomeRG100M.txt");
+    break;
+
+    default:
+        if(opcao_arq < 'a' || opcao_arq > 103)
+            printf("Opcao invalida!");
+    break;
+    }
+}
 
 int main(){
 
     Fila fila;
     
-    char file_name[15] = {"NomeRG10.txt"};
+    char file_name[15] = {};
     char nome_lista[50] = {};
     int opcao;
 
     criar_fila(&fila);
-
-    ler_arquivo_e_inserir(file_name, &fila);
-            
-    if(fila.prim)
-        printf("\nFila preenchida do arquivo %s com sucesso!\n\n", file_name);
-    else
-        printf("\nErro ao preencher lista!");
            
     do
     { 
@@ -286,6 +345,7 @@ int main(){
         printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
         printf("9 - Salvar a lista em um arquivo\n");
+        printf("10 - Ler a lista de um arquivo\n");
         printf("\n11 - Sair\n\n");
         scanf("%d", &opcao);
         switch (opcao)
@@ -320,13 +380,17 @@ int main(){
             scanf("%50[^\n]", nome_lista);
             salvar_lista_em_arquivo(nome_lista, &fila);
             break;
+        case 10:
+            opcao_arquivo(file_name);
+            ler_arquivo_e_inserir(file_name, &fila);
+            break;
         default:
             break;
         }
     } while (opcao != 11);
     
 
-    
+    printf("Numero de movimentaçoes (M): %d \n\n", m);
 
     return 0;
 }
