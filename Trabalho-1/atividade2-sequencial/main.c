@@ -4,7 +4,7 @@
 
 typedef struct{
     char nome[20];
-    char rg[8];
+    char rg[9];
 }Pessoa;
 
 typedef struct no
@@ -23,7 +23,7 @@ void verificar_enter_rg(Pessoa *rg){
 
     int i;
     
-    for(i = 0; i < 8;i++){
+    for(i = 0; i < 9;i++){
         if((*rg).rg[i] == '\n')
             (*rg).rg[i] = '\0';
     }
@@ -35,8 +35,10 @@ void nome_e_rg(Pessoa *p){
     getchar();
     scanf("%20[^\n]",p->nome);
     getchar();
-    printf("\nDigite o RG: ");
-    scanf("%8[^n]",p->rg);
+    printf("\nDigite o RG (8 digitos): ");
+    fgets(p->rg, 9, stdin);
+    //scanf("%8[^n]",p->rg);
+    verificar_enter_rg(&p);
 }
 
 void criar_fila(Fila *fila){
@@ -113,6 +115,7 @@ void inserir_fim(Fila *fila){ // II
     novo->proximo = NULL;
     fila->fim->proximo = novo;
     fila->fim = novo;
+    fila->tam++;
 }
 
 void inserir_posicao_n(Fila *fila){ //III
@@ -313,7 +316,9 @@ int main(){
             break;
         case 9:
             printf("\nQual nome seu arquivo recebera?\n");
-            getchar();8ome_lista, &fila);
+            getchar();
+            scanf("%50[^\n]", nome_lista);
+            salvar_lista_em_arquivo(nome_lista, &fila);
             break;
         default:
             break;
