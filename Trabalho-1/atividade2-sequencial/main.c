@@ -19,10 +19,14 @@ typedef struct{
     int tam;
 }Fila;
 
-void criar_fila(Fila *fila){
-    fila->prim = NULL;
-    fila->fim = NULL;
-    fila->tam = 0;
+void verificar_enter_rg(Pessoa *rg){
+
+    int i;
+    
+    for(i = 0; i < 8;i++){
+        if((*rg).rg[i] == '\n')
+            (*rg).rg[i] = '\0';
+    }
 }
 
 void nome_e_rg(Pessoa *p){
@@ -33,6 +37,12 @@ void nome_e_rg(Pessoa *p){
     getchar();
     printf("\nDigite o RG: ");
     scanf("%8[^n]",p->rg);
+}
+
+void criar_fila(Fila *fila){
+    fila->prim = NULL;
+    fila->fim = NULL;
+    fila->tam = 0;
 }
 
 void ler_arquivo_e_inserir(char file[],Fila *fila){ //1) a. Lista sequencial(fila)
@@ -53,6 +63,8 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ //1) a. Lista sequencial(fil
                 strcpy(pessoa.rg, rg);
                 rg = strtok(NULL, ",");
             }
+
+            verificar_enter_rg(&pessoa);
 
             No *novo = malloc(sizeof(No));
 
@@ -183,7 +195,7 @@ void remover_posicao_n(Fila *fila){ // VI
     }
 }
 
-void procurar_no(Fila *fila){
+void procurar_no(Fila *fila){ //XII
     No *aux = NULL;
 
     int rg_int;
@@ -220,7 +232,24 @@ void imprimir_fila(Fila *fila){ //XIII
         printf("Nome: %s\nRg: %s\n\n", aux->p.nome, aux->p.rg);
         aux = aux->proximo;
     }
-    printf("\n-----------FIM FILA TAM:%d-----------\n", fila->tam);
+    printf("\n-----------FIM FILA TAM:%d-----------\n\n", fila->tam);
+}
+
+void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
+    FILE *arquivo = fopen(nome_lista, "w");
+    No *aux = fila->prim;
+
+    if(arquivo){
+
+        while(aux){
+            fprintf(arquivo,"%s,%s\n", aux->p.nome, aux->p.rg);
+            aux = aux->proximo;
+        }
+       
+        fclose(arquivo);
+    }
+    else
+        printf("\nErro ao abrir o arquivo!\n\n");
 }
 
 
@@ -231,6 +260,7 @@ int main(){
     Fila fila;
     
     char file_name[15] = {"NomeRG10.txt"};
+    char nome_lista[50] = {};
     int opcao;
 
     criar_fila(&fila);
@@ -242,11 +272,9 @@ int main(){
     else
         printf("\nErro ao preencher lista!");
            
-
     do
-    {
-        
-        printf("1 - Inserir um no no INICIO\n");
+    { 
+        printf("\n\n1 - Inserir um no no INICIO\n");
         printf("2 - Inserir um no no FINAL\n");
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
@@ -254,6 +282,7 @@ int main(){
         printf("6 - Retirar um no na POSICAO N\n");
         printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
+        printf("9 - Salvar a lista em um arquivo\n");
         printf("\n11 - Sair\n\n");
         scanf("%d", &opcao);
         switch (opcao)
@@ -281,11 +310,15 @@ int main(){
             break;
         case 8:
             imprimir_fila(&fila);    
-           break;
+            break;
+        case 9:
+            printf("\nQual nome seu arquivo recebera?\n");
+            getchar();8ome_lista, &fila);
+            break;
         default:
             break;
         }
-    } while (opcao != 0);
+    } while (opcao != 11);
     
 
     
