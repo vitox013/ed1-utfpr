@@ -170,6 +170,31 @@ void remover_posicao_n(No **lista){ //VI
         printf("\nLista vazia!\n");
 }
 
+void procurar_no(No **lista){//VII
+    No *aux;
+    int rg_int;
+    char rg[8];
+
+    getchar();
+    printf("\nDigite o RG(8 digitos) que esta procurando: ");
+    scanf("%d", &rg_int);
+    sprintf(rg, "%d", rg_int);
+
+    aux = *lista;
+
+    while(aux->proximo){
+        if(strcmp(aux->p.rg, rg) == 0){
+            printf("\nPessoa encontrada!\n");
+            printf("Nome: %s\n\n", aux->p.nome);
+            break;
+        }
+        aux = aux->proximo;
+        m_n++;
+    }
+    if(strcmp(aux->p.rg, rg) != 0)
+        printf("\nRG nao encontrado!\n");
+}
+
 void imprimir_lista(No *lista){ //XIII lista
     printf("\n-----------LISTA------------\n");
     while(lista){
@@ -233,7 +258,7 @@ void menu_opcoes(){
         printf("4 - Retirar um no do INICIO\n");
         printf("5 - Retirar um no do FIM\n");
         printf("6 - Retirar um no na POSICAO N\n");
-        //printf("7 - Procurar no por RG\n");
+        printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
         //printf("9 - Salvar a lista em um arquivo\n");
         printf("10 - Ler a lista de um arquivo\n");
@@ -274,6 +299,9 @@ int main(){
             break;
         case 6:
             remover_posicao_n(&lista);
+            break;
+        case 7:
+            procurar_no(&lista);
             break;
         case 8:
             imprimir_lista(lista);
