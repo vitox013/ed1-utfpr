@@ -55,6 +55,57 @@ void inserir_inicio(No **lista){//I
 }
 
 void inserir_fim(No **lista){//II
+    No *novo = malloc(sizeof(No)), *aux;
+    Pessoa pessoa;
+
+    nome_e_rg(&pessoa);
+
+    if(novo){
+        novo->p = pessoa;
+        novo->proximo = NULL;
+        if(*lista == NULL)
+            *lista = novo;
+        else{
+            aux = *lista;
+            while(aux->proximo)
+                aux = aux->proximo;
+            aux->proximo = novo;     
+        }
+    }
+    else
+        printf("\nErro ao alocar memoria!\n");
+}
+
+void inserir_posicao_n(No **lista){//III
+    No *aux, *novo = malloc(sizeof(No));
+    Pessoa pessoa;
+    int i, n;
+
+    nome_e_rg(&pessoa);
+    printf("\nEm qual posicao deseja inserir?\n");
+    scanf("%d", &n);
+
+    if(novo){
+        novo->p = pessoa;
+        if(n == 1){
+            novo->p = pessoa;
+            novo->proximo = *lista;
+            *lista = novo;
+        }
+        else if(*lista == NULL){
+            novo->proximo = NULL;
+            *lista = novo;
+        }
+        else{
+            aux = *lista;
+            for(i = 0; i < n - 2; i++)
+                aux = aux->proximo;
+            novo->proximo = aux->proximo;
+            aux->proximo = novo;
+        } 
+    }
+    else
+        printf("\nErro ao alocar memoria!\n");
 
 }
 
@@ -128,8 +179,8 @@ void ler_arquivo_e_inserir(char file[], No **lista){ //X
 void menu_opcoes(){
     
         printf("\n\n1 - Inserir um no no INICIO\n");
-        //printf("2 - Inserir um no no FINAL\n");
-        //printf("3 - Inserir um no na POSICAO N\n");
+        printf("2 - Inserir um no no FINAL\n");
+        printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
         //printf("5 - Retirar um no do FIM\n");
         //printf("6 - Retirar um no na POSICAO N\n");
@@ -160,6 +211,12 @@ int main(){
         case 1:
             inserir_inicio(&lista);
             break;
+        case 2:
+            inserir_fim(&lista);
+            break;
+        case 3:
+            inserir_posicao_n(&lista);
+            break;
         case 4:
             remover_do_inicio(&lista);
             break;
@@ -174,6 +231,7 @@ int main(){
             printf("\nOpcao invalida! Digite novamente!\n");
             break;
         }
+        mostrar_menu();
     } while (opcao != 11 && opcao2 != 'n' && opcao2 != 'N');
     
 
