@@ -122,6 +122,21 @@ void remover_do_inicio(No **lista){ //IV lista
         printf("\nLISTA VAZIA!\n");
 }
 
+void remover_do_fim(No **lista){//V
+    No *aux, *ant,*remover = NULL;
+
+    if(*lista){
+        aux = *lista;
+        while(aux->proximo){
+            ant = aux;
+            aux = aux->proximo;
+        }
+        ant->proximo = NULL;
+    }
+    else
+        printf("\nLista vazia!\n");
+}
+
 void imprimir_lista(No *lista){ //XIII lista
     printf("\n-----------LISTA------------\n");
     while(lista){
@@ -169,6 +184,7 @@ void ler_arquivo_e_inserir(char file[], No **lista){ //X
                 printf("\nERRO AO ALOCAR MEMORIA!\n");
         }
         fclose(arquivo);
+        printf("\nLista lida com sucesso!\n");
     }
     else
         printf("\nERRO AO ABRIR O ARQUIVO!\n");
@@ -182,7 +198,7 @@ void menu_opcoes(){
         printf("2 - Inserir um no no FINAL\n");
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
-        //printf("5 - Retirar um no do FIM\n");
+        printf("5 - Retirar um no do FIM\n");
         //printf("6 - Retirar um no na POSICAO N\n");
         //printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
@@ -219,6 +235,9 @@ int main(){
             break;
         case 4:
             remover_do_inicio(&lista);
+            break;
+        case 5:
+            remover_do_fim(&lista);
             break;
         case 8:
             imprimir_lista(lista);
