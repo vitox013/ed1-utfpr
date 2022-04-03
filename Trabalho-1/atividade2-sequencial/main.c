@@ -92,10 +92,10 @@ void inserir_inicio(Fila *fila){ //I
         m_n += 2;
     }
     else{
-        c_n++; //numero de if executados
         aux = fila->prim;
         fila->prim = novo; 
         fila->prim->proximo = aux;
+        c_n++; //numero de if executados
         m_n += 3; //numero de copias realizadas
     }
     fila->tam++;
@@ -128,29 +128,40 @@ void inserir_fim(Fila *fila){ // II
 
 void inserir_posicao_n(Fila *fila){ //III
     time_t tIni, tFim;
-    No *novo = malloc(sizeof(No)), *aux = NULL;
+    No *novo = malloc(sizeof(No)), *aux = NULL, *ant, *aux2;
     Pessoa pessoa;
-    int i, n, c_n = 0, m_n = 0;
+    int i, n;
     
     nome_e_rg(&pessoa);
     printf("\nQual posicao deseja inserir?\n");
     scanf("%d", &n);
 
-    tIni = time(NULL);
-    aux = fila->prim;
-    novo->p = pessoa;
-    novo->proximo = NULL;
-    m_n += 3;
-    for(i = 2; i < n; i++){
-        aux = aux->proximo;
-        m_n += 1;
-    }
-    novo->proximo = aux->proximo;
-    aux->proximo = novo;
-    m_n += 2;
-    fila->tam++;
+    if(novo){
+        tIni = time(NULL);
+        novo->p = pessoa;
+        novo->proximo = NULL;
+        if(n == 1){
+            aux = fila->prim;
+            fila->prim = novo;
+            fila->prim->proximo = aux;
+        }
+        else{
+            aux = fila->prim;
+            for(i = 1; i < n; i++){
+                ant = aux;
+                aux = aux->proximo;
+            }
+            aux2 = aux;
+            ant->proximo = novo;
+            novo->proximo = aux2;
+        }
+        m_n += 2;
+        fila->tam++;
     
     printf("\nNo inserido com sucesso na %d° posicao!\n\n", n);
+    }
+    else
+        printf("\nErro ao alocar memoria!\n");
 
     informacoes(pessoa,c_n, m_n);
     tFim = time(NULL);
