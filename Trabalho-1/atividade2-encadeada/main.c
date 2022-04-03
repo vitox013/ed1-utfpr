@@ -204,6 +204,22 @@ void imprimir_lista(No *lista){ //XIII lista
     printf("\n-----------FIM LISTA-----------\n");
 }
 
+void salvar_lista_em_arquivo(char nome_lista[],No **lista){//IX
+    FILE *arquivo = fopen(nome_lista, "w");
+    No *aux;
+
+    if(arquivo){
+        aux = *lista;
+        while(aux){
+            fprintf(arquivo, "%s,%s\n", aux->p.nome, aux->p.rg);
+            aux = aux->proximo;
+        }
+        fclose(arquivo);
+    }
+    else
+        printf("\nErro ao abrir o arquivo!\n");
+}
+
 void ler_arquivo_e_inserir(char file[], No **lista){ //X
     char copia_linha[50];
     char linha_completa[50];
@@ -260,7 +276,7 @@ void menu_opcoes(){
         printf("6 - Retirar um no na POSICAO N\n");
         printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
-        //printf("9 - Salvar a lista em um arquivo\n");
+        printf("9 - Salvar a lista em um arquivo\n");
         printf("10 - Ler a lista de um arquivo\n");
         printf("\n11 - Sair\n\n");
 }
@@ -270,10 +286,53 @@ void mostrar_menu(){
     scanf(" %c", &opcao2);
 }
 
+void opcao_arquivo(char *nome){
+
+    char opcao_arq;
+
+    printf("\nQual arquivo?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
+    scanf(" %c", &opcao_arq);
+
+    switch(opcao_arq){
+    case 'a':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG10.txt");
+    break;
+
+    case 'b':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG50.txt");
+    break;
+
+    case 'c':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG100.txt");
+    break;
+
+    case 'd':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG1K.txt");
+    break;
+
+    case 'e':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG10K.txt");
+    break;
+
+    case 'f':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG1M.txt");
+    break;
+
+    case 'g':
+        strcpy(nome, "/home/vitor/filesED1/NomeRG100M.txt");
+    break;
+
+    default:
+        if(opcao_arq < 'a' || opcao_arq > 103)
+            printf("Opcao invalida!");
+    break;
+    }
+}
+
 int main(){
 
     No *lista = NULL;
-    char file_name[15] = {"NomeRG10.txt"};
+    char file_name[50] = {}, nome_lista[50] = {};
     int opcao;
 
     do
@@ -306,7 +365,14 @@ int main(){
         case 8:
             imprimir_lista(lista);
             break;
+        case 9:
+            printf("\nQual nome seu arquivo recebera?\n");
+            getchar();
+            scanf("%50[^\n]", nome_lista);
+            salvar_lista_em_arquivo(nome_lista,&lista);
+            break;
         case 10:
+            opcao_arquivo(file_name);
             ler_arquivo_e_inserir(file_name, &lista);
             break;
     
