@@ -184,21 +184,21 @@ void remover_do_inicio(Fila *fila){ //IV
 void remover_do_fim(Fila *fila){ //V 
     time_t tIni, tFim;
     tIni = time(NULL);
-    No *remover = NULL, *aux = NULL;
+    No *remover = NULL, *aux = NULL, *ant;
     int tam = fila->tam -1;
     int i;
     
     aux = fila->prim;
-    m_n++;
     remover = fila->fim;
-    m_n++;
-    for(i = 1; i < tam; i++){
+    while(aux->proximo){
+        ant = aux;
         aux = aux->proximo;
-        m_n++;
+        m_n+2;
     }
-    aux->proximo = NULL;
-    fila->fim = aux;
-    m_n += 2;
+    ant->proximo = NULL;
+    fila->fim = ant;
+    
+    m_n += 4;
     fila->tam--;
         
     printf("\n----ELEMENTO REMOVIDO DO FIM----\n");
@@ -277,7 +277,6 @@ void procurar_no(Fila *fila){ //XII
     if(strcmp(aux->p.rg, rg) != 0)
         printf("\nRG nao encontrado!\n");
 }
-
 
 void imprimir_fila(Fila *fila){ //XIII 
 
