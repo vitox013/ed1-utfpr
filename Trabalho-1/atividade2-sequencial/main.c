@@ -58,6 +58,11 @@ void nome_e_rg(Pessoa *p){
     getchar();
 }
 
+void imprimir_pessoa_removida(No *remover){
+    printf("\n----ELEMENTO REMOVIDO----\n");
+    printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
+}
+
 void criar_fila(Fila *fila){
     fila->prim = NULL;
     fila->fim = NULL;
@@ -153,6 +158,7 @@ void inserir_posicao_n(Fila *fila){ //III
             fila->prim = novo;
             fila->prim->proximo = aux;
             m_n+= 3;
+            c_n++;
         }
         else{
             aux = fila->prim;
@@ -160,6 +166,7 @@ void inserir_posicao_n(Fila *fila){ //III
                 ant = aux;
                 aux = aux->proximo;
                 m_n+= 2;
+                c_n++;
             }
             aux2 = aux;
             ant->proximo = novo;
@@ -196,8 +203,7 @@ void remover_do_inicio(Fila *fila){ //IV
 
     m_n += 2;
     c_n++;
-    printf("\n----ELEMENTO REMOVIDO DO INICIO----\n");
-    printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
+    imprimir_pessoa_removida(remover);
     cn_mn(c_n, m_n); 
     tFim = time(NULL);
     tempo_exe(tFim, tIni);
@@ -214,6 +220,7 @@ void remover_do_fim(Fila *fila){ //V
         ant = aux;
         aux = aux->proximo;
         m_n+= 2;
+        c_n++;
     }
     ant->proximo = NULL;
     fila->fim = ant;
@@ -221,8 +228,7 @@ void remover_do_fim(Fila *fila){ //V
     m_n += 4;
     fila->tam--;
         
-    printf("\n----ELEMENTO REMOVIDO DO FIM----\n");
-    printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
+    imprimir_pessoa_removida(remover);
     
     cn_mn(c_n, m_n); 
     tFim = time(NULL);
@@ -259,8 +265,7 @@ void remover_posicao_n(Fila *fila){ // VI
         }
         fila->tam--;
     
-    printf("\n----ELEMENTO REMOVIDO DA %d POSICAO----\n", n);
-    printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
+    imprimir_pessoa_removida(remover);
     }
     else
         printf("\nFila vazia!\n");
