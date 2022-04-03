@@ -162,15 +162,15 @@ void remover_do_inicio(Fila *fila){ //IV
     tIni = time(NULL);
 
     No *remover = NULL;
-    m_n++;
 
     if(fila->prim){
-        c_n++;
         remover = fila->prim;
         printf("\n----ELEMENTO REMOVIDO DO INICIO----\n");
         printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
         fila->prim = remover->proximo;
+
         m_n += 2;
+        c_n++;
         fila->tam--;
     }
     else
@@ -211,36 +211,39 @@ void remover_do_fim(Fila *fila){ //V
 
 void remover_posicao_n(Fila *fila){ // VI
     time_t tIni, tFim;
-    No *novo = malloc(sizeof(No)), *aux = NULL, *remover = NULL, *proximo_no = NULL;
+    No  *aux = NULL, *remover = NULL, *proximo_no = NULL, *ant;
     int i, n;
     printf("\nQual posicao deseja remover?\n");
     scanf("%d", &n);
 
     tIni = time(NULL);
-    if(n == 1){
-        remover_do_inicio(fila);
-        c_n++;
-    }
-    else{
-        novo->proximo = NULL;
-        aux = fila->prim;
-        m_n += 2;
-        for(i = 2; i < n; i++){
-            aux = aux->proximo;
-            m_n++;
+    
+    
+    if(fila->prim){
+        if(n == 1){
+            remover = fila->prim;
+            fila->prim = fila->prim->proximo;
+            m_n+= 2;
         }
-        remover = aux->proximo;
-        m_n++;
-        proximo_no = aux->proximo->proximo;
-        m_n++;
-        aux->proximo = novo->proximo;
-        aux->proximo = proximo_no;
-        m_n += 2;
+        else{
+            aux = fila->prim;
+            for(i = 1; i < n; i++){
+                ant = aux;
+                aux = aux->proximo;
+                m_n+= 2;
+            }
+            remover = aux;
+            proximo_no = aux->proximo;
+            ant->proximo = proximo_no;
+            m_n+= 4;
+        }
         fila->tam--;
     
     printf("\n----ELEMENTO REMOVIDO DA %d POSICAO----\n", n);
     printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
     }
+    else
+        printf("\nFila vazia!\n");
 
     cn_mn(c_n, m_n); 
     tFim = time(NULL);
