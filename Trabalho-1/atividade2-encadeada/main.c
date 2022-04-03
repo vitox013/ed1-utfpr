@@ -19,9 +19,13 @@ typedef struct no
     struct no *proximo;
 }No;
 
+void cn_mn(int cn, int mn);
+void tempo_exe(int tFim, int tIni);
 void verificar_enter_rg(Pessoa *rg);
 void nome_e_rg(Pessoa *p);
 void imprimir_pessoa_removida(No *remover);
+void imprimir_pessoa(Pessoa p);
+void informacoes(Pessoa pessoa, int cn, int mn);
 void inserir_inicio(No **lista);//I
 void inserir_fim(No **lista);//II
 void inserir_posicao_n(No **lista);//III
@@ -36,7 +40,7 @@ void menu_opcoes();
 void mostrar_menu();
 void opcao_arquivo(char *nome);
 
-int main(){
+int main(){ //MAIN MAIN MAIN
 
     No *lista = NULL;
     char file_name[50] = {}, nome_lista[50] = {};
@@ -82,7 +86,6 @@ int main(){
             opcao_arquivo(file_name);
             ler_arquivo_e_inserir(file_name, &lista);
             break;
-    
         default:
             printf("\nOpcao invalida! Digite novamente!\n");
             break;
@@ -93,6 +96,20 @@ int main(){
 
 
     return 0;
+}
+
+void cn_mn(int cn, int mn){
+    c_n = 0, m_n = 0;
+    printf("\nC(n): %d\n",cn);
+    printf("\nM(n): %d\n",mn);
+}
+
+void tempo_exe(int tFim, int tIni){
+    float tExecucao;
+
+    tExecucao = difftime(tFim, tIni);
+
+    printf("\nTempo de execucao da funcao: %.2f sec", tExecucao);
 }
 
 void verificar_enter_rg(Pessoa *rg){
@@ -120,13 +137,25 @@ void imprimir_pessoa_removida(No *remover){
     printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
 }
 
+void imprimir_pessoa(Pessoa p){
+    printf("\nNome: %s\nRg: %s\n", p.nome, p.rg);
+}
+
+void informacoes(Pessoa pessoa, int cn, int mn){
+    c_n = 0; m_n = 0;
+    imprimir_pessoa(pessoa);
+    cn_mn(cn, mn); 
+}
+
 void inserir_inicio(No **lista){//I
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *novo = malloc(sizeof(No));
     Pessoa pessoa;
     
     nome_e_rg(&pessoa);
-
+    tIni = time(NULL);
     if (novo){
+        c_n++;
         novo->p = pessoa;
         novo->proximo = *lista;
         *lista = novo;
@@ -134,38 +163,57 @@ void inserir_inicio(No **lista){//I
     }
     else
         printf("\nErro ao alocar memoria!\n");
+
+    //ignore this
+    m_n+= 3;
+    informacoes(pessoa, c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void inserir_fim(No **lista){//II
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *novo = malloc(sizeof(No)), *aux;
     Pessoa pessoa;
 
     nome_e_rg(&pessoa);
-
+    tIni = time(NULL);
     if(novo){
         novo->p = pessoa;
         novo->proximo = NULL;
-        if(*lista == NULL)
+        if(*lista == NULL){
             *lista = novo;
+            c_n++;
+            m_n++;
+        }
         else{
             aux = *lista;
             while(aux->proximo)
                 aux = aux->proximo;
             aux->proximo = novo;     
+            m_n+= 3;
         }
     }
     else
         printf("\nErro ao alocar memoria!\n");
+    //ignore this
+    m_n+= 2;
+    informacoes(pessoa, c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void inserir_posicao_n(No **lista){//III
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *aux, *novo = malloc(sizeof(No));
     Pessoa pessoa;
     int i, n;
 
-    nome_e_rg(&pessoa);
+    nome_e_rg(&pessoa);   
     printf("\nEm qual posicao deseja inserir?\n");
     scanf("%d", &n);
+
+    tIni = time(NULL);
 
     if(novo){
         novo->p = pessoa;
@@ -173,10 +221,14 @@ void inserir_posicao_n(No **lista){//III
             novo->p = pessoa;
             novo->proximo = *lista;
             *lista = novo;
+            m_n+= 3;
+            c_n++;
         }
         else if(*lista == NULL){
             novo->proximo = NULL;
             *lista = novo;
+            c_n++;
+            m_n+= 2;
         }
         else{
             aux = *lista;
@@ -184,70 +236,105 @@ void inserir_posicao_n(No **lista){//III
                 aux = aux->proximo;
             novo->proximo = aux->proximo;
             aux->proximo = novo;
+            m_n+= 4;
         } 
     }
     else
         printf("\nErro ao alocar memoria!\n");
-
+    
+    //ignore this
+    printf("\nElemento inserido na %d° posicao!", n);
+    informacoes(pessoa, c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void remover_do_inicio(No **lista){ //IV lista
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *remover = NULL;
-
+    tIni = time(NULL);
     if(*lista){
         remover = *lista;
         *lista = remover->proximo;
         imprimir_pessoa_removida(remover);
+        c_n++;
+        m_n+= 2;
     }
     else
         printf("\nLISTA VAZIA!\n");
+    //ignore this
+    cn_mn(c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void remover_do_fim(No **lista){//V
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *aux, *ant, *elem_removido;
-
+    tIni = time(NULL);
     if(*lista){
         aux = *lista;
         while(aux->proximo){
             ant = aux;
             aux = aux->proximo;
+            m_n += 2;
+            c_n++;
         }
         elem_removido = aux;
         ant->proximo = NULL;
         imprimir_pessoa_removida(elem_removido);
+        m_n+= 3;
     }
     else
         printf("\nLista vazia!\n");
+    //ignore this
+    cn_mn(c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void remover_posicao_n(No **lista){ //VI
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *aux, *elem_removido, *ant, *prox_no;
     int i, n = 0;
 
     printf("\nQual posicao deseja remover? \n");
     scanf("%d", &n);
+    tIni = time(NULL);
+
     if((*lista)){
         if(n == 1){
             elem_removido = *lista;
             (*lista) = (*lista)->proximo;
+            c_n++;
+            m_n+= 2;
         }
         else{
             aux = *lista;
             for(i = 1; i < n;i++){
                 ant = aux;
                 aux = aux->proximo;
+                c_n++;
+                m_n+= 2;
             }
             elem_removido = aux;
             prox_no = aux->proximo;
             ant->proximo = prox_no;
+            m_n+= 4;
         }
         imprimir_pessoa_removida(elem_removido);
     }
     else
         printf("\nLista vazia!\n");
+    
+    //ignore this
+    cn_mn(c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void procurar_no(No **lista){//VII
+    time_t tIni, tFim; //medir tempo exec da funcao
     No *aux;
     int rg_int;
     char rg[8];
@@ -257,11 +344,14 @@ void procurar_no(No **lista){//VII
     scanf("%d", &rg_int);
     sprintf(rg, "%d", rg_int);
 
-    aux = *lista;
+    tIni = time(NULL);
 
+    aux = *lista;
+    m_n++;
     while(aux->proximo){
+        c_n++;
         if(strcmp(aux->p.rg, rg) == 0){
-            printf("\nPessoa encontrada!\n");
+            printf("\nPessoa encontrada!");
             printf("Nome: %s\n\n", aux->p.nome);
             break;
         }
@@ -269,10 +359,18 @@ void procurar_no(No **lista){//VII
         m_n++;
     }
     if(strcmp(aux->p.rg, rg) != 0)
-        printf("\nRG nao encontrado!\n");
+        printf("\nRG nao encontrado!");
+
+    //ignore this
+    cn_mn(c_n, m_n);
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void imprimir_lista(No *lista){ //XIII lista
+    time_t tIni, tFim; //medir tempo exec da funcao
+    tIni = time(NULL);
+
     printf("\n-----------LISTA------------\n");
     while(lista){
         printf("Nome: %s\nRg: %s\n\n", lista->p.nome, lista->p.rg);
@@ -282,6 +380,8 @@ void imprimir_lista(No *lista){ //XIII lista
 }
 
 void salvar_lista_em_arquivo(char nome_lista[],No **lista){//IX
+    time_t tIni, tFim; //medir tempo exec da funcao
+    tIni = time(NULL);
     FILE *arquivo = fopen(nome_lista, "w");
     No *aux;
 
@@ -298,6 +398,8 @@ void salvar_lista_em_arquivo(char nome_lista[],No **lista){//IX
 }
 
 void ler_arquivo_e_inserir(char file[], No **lista){ //X
+    time_t tIni, tFim; //medir tempo exec da funcao
+    tIni = time(NULL);
     char copia_linha[50];
     char linha_completa[50];
     Pessoa pessoa;
@@ -339,8 +441,6 @@ void ler_arquivo_e_inserir(char file[], No **lista){ //X
     }
     else
         printf("\nERRO AO ABRIR O ARQUIVO!\n");
-
-
 }
 
 void menu_opcoes(){
