@@ -3,9 +3,10 @@
 #include <string.h>
 #include <time.h>
 
+//variaveis globais
 int c_n, m_n;
-
 char opcao2;
+//variaveis globais
 
 typedef struct{
     char nome[20];
@@ -17,6 +18,82 @@ typedef struct no
     Pessoa p;
     struct no *proximo;
 }No;
+
+void verificar_enter_rg(Pessoa *rg);
+void nome_e_rg(Pessoa *p);
+void imprimir_pessoa_removida(No *remover);
+void inserir_inicio(No **lista);//I
+void inserir_fim(No **lista);//II
+void inserir_posicao_n(No **lista);//III
+void remover_do_inicio(No **lista);//IV
+void remover_do_fim(No **lista);//V
+void remover_posicao_n(No **lista); //VI
+void procurar_no(No **lista);//VII
+void imprimir_lista(No *lista);//XIII lista
+void salvar_lista_em_arquivo(char nome_lista[],No **lista);//IX
+void ler_arquivo_e_inserir(char file[], No **lista); //X
+void menu_opcoes();
+void mostrar_menu();
+void opcao_arquivo(char *nome);
+
+int main(){
+
+    No *lista = NULL;
+    char file_name[50] = {}, nome_lista[50] = {};
+    int opcao;
+
+    do
+    {
+        menu_opcoes();
+        scanf("%d", &opcao);
+        switch (opcao)
+        {
+        case 1:
+            inserir_inicio(&lista);
+            break;
+        case 2:
+            inserir_fim(&lista);
+            break;
+        case 3:
+            inserir_posicao_n(&lista);
+            break;
+        case 4:
+            remover_do_inicio(&lista);
+            break;
+        case 5:
+            remover_do_fim(&lista);
+            break;
+        case 6:
+            remover_posicao_n(&lista);
+            break;
+        case 7:
+            procurar_no(&lista);
+            break;
+        case 8:
+            imprimir_lista(lista);
+            break;
+        case 9:
+            printf("\nQual nome seu arquivo recebera?\n");
+            getchar();
+            scanf("%50[^\n]", nome_lista);
+            salvar_lista_em_arquivo(nome_lista,&lista);
+            break;
+        case 10:
+            opcao_arquivo(file_name);
+            ler_arquivo_e_inserir(file_name, &lista);
+            break;
+    
+        default:
+            printf("\nOpcao invalida! Digite novamente!\n");
+            break;
+        }
+        mostrar_menu();
+    } while (opcao != 11 && opcao2 != 'n' && opcao2 != 'N');
+    
+
+
+    return 0;
+}
 
 void verificar_enter_rg(Pessoa *rg){
     int i;
@@ -327,63 +404,4 @@ void opcao_arquivo(char *nome){
             printf("Opcao invalida!");
     break;
     }
-}
-
-int main(){
-
-    No *lista = NULL;
-    char file_name[50] = {}, nome_lista[50] = {};
-    int opcao;
-
-    do
-    {
-        menu_opcoes();
-        scanf("%d", &opcao);
-        switch (opcao)
-        {
-        case 1:
-            inserir_inicio(&lista);
-            break;
-        case 2:
-            inserir_fim(&lista);
-            break;
-        case 3:
-            inserir_posicao_n(&lista);
-            break;
-        case 4:
-            remover_do_inicio(&lista);
-            break;
-        case 5:
-            remover_do_fim(&lista);
-            break;
-        case 6:
-            remover_posicao_n(&lista);
-            break;
-        case 7:
-            procurar_no(&lista);
-            break;
-        case 8:
-            imprimir_lista(lista);
-            break;
-        case 9:
-            printf("\nQual nome seu arquivo recebera?\n");
-            getchar();
-            scanf("%50[^\n]", nome_lista);
-            salvar_lista_em_arquivo(nome_lista,&lista);
-            break;
-        case 10:
-            opcao_arquivo(file_name);
-            ler_arquivo_e_inserir(file_name, &lista);
-            break;
-    
-        default:
-            printf("\nOpcao invalida! Digite novamente!\n");
-            break;
-        }
-        mostrar_menu();
-    } while (opcao != 11 && opcao2 != 'n' && opcao2 != 'N');
-    
-
-
-    return 0;
 }
