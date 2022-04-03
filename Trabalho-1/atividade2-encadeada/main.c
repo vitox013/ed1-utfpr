@@ -38,6 +38,11 @@ void nome_e_rg(Pessoa *p){
     getchar();
 }
 
+void imprimir_pessoa_removida(No *remover){
+    printf("\n----ELEMENTO REMOVIDO----\n");
+    printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
+}
+
 void inserir_inicio(No **lista){//I
     No *novo = malloc(sizeof(No));
     Pessoa pessoa;
@@ -114,16 +119,15 @@ void remover_do_inicio(No **lista){ //IV lista
 
     if(*lista){
         remover = *lista;
-        printf("\n----ELEMENTO REMOVIDO DO INICIO----\n");
-        printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
         *lista = remover->proximo;
+        imprimir_pessoa_removida(remover);
     }
     else
         printf("\nLISTA VAZIA!\n");
 }
 
 void remover_do_fim(No **lista){//V
-    No *aux, *ant,*remover = NULL;
+    No *aux, *ant, *elem_removido;
 
     if(*lista){
         aux = *lista;
@@ -131,7 +135,36 @@ void remover_do_fim(No **lista){//V
             ant = aux;
             aux = aux->proximo;
         }
+        elem_removido = aux;
         ant->proximo = NULL;
+        imprimir_pessoa_removida(elem_removido);
+    }
+    else
+        printf("\nLista vazia!\n");
+}
+
+void remover_posicao_n(No **lista){ //VI
+    No *aux, *elem_removido, *ant, *prox_no;
+    int i, n = 0;
+
+    printf("\nQual posicao deseja remover? \n");
+    scanf("%d", &n);
+    if((*lista)){
+        if(n == 1){
+            elem_removido = *lista;
+            (*lista) = (*lista)->proximo;
+        }
+        else{
+            aux = *lista;
+            for(i = 1; i < n;i++){
+                ant = aux;
+                aux = aux->proximo;
+            }
+            elem_removido = aux;
+            prox_no = aux->proximo;
+            ant->proximo = prox_no;
+        }
+        imprimir_pessoa_removida(elem_removido);
     }
     else
         printf("\nLista vazia!\n");
@@ -199,7 +232,7 @@ void menu_opcoes(){
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
         printf("5 - Retirar um no do FIM\n");
-        //printf("6 - Retirar um no na POSICAO N\n");
+        printf("6 - Retirar um no na POSICAO N\n");
         //printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
         //printf("9 - Salvar a lista em um arquivo\n");
@@ -238,6 +271,9 @@ int main(){
             break;
         case 5:
             remover_do_fim(&lista);
+            break;
+        case 6:
+            remover_posicao_n(&lista);
             break;
         case 8:
             imprimir_lista(lista);
