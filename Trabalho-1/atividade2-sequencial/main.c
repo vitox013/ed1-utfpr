@@ -85,24 +85,28 @@ void inserir_inicio(Fila *fila){ //I
     novo->p = pessoa;
     novo->proximo = NULL;
 
-    if(fila->prim == NULL){
-        c_n++; //numero de if executados
-        fila->prim = novo;
-        fila->fim = novo;
-        m_n += 2;
+    if(novo){
+        if(fila->prim == NULL){
+            c_n++;
+            fila->prim = novo;
+            fila->fim = novo;
+            m_n += 2;
+        }
+        else{
+            aux = fila->prim;
+            fila->prim = novo; 
+            fila->prim->proximo = aux;
+            m_n += 3;
+        }
+        fila->tam++;
+        m_n+= 2;
+        informacoes(pessoa,c_n, m_n);
+        tFim = time(NULL);
+        tempo_exe(tFim, tIni);
+        printf("\n\n1° posicao na lista\n");
     }
-    else{
-        aux = fila->prim;
-        fila->prim = novo; 
-        fila->prim->proximo = aux;
-        c_n++; //numero de if executados
-        m_n += 3; //numero de copias realizadas
-    }
-    fila->tam++;
-    informacoes(pessoa,c_n, m_n);
-    tFim = time(NULL);
-    tempo_exe(tFim, tIni);
-    printf("\n\n1° posicao na lista\n");
+    else
+        printf("\nErro ao alocar memoria!\n");
 }
 
 void inserir_fim(Fila *fila){ // II
@@ -110,20 +114,24 @@ void inserir_fim(Fila *fila){ // II
     No *novo = malloc(sizeof(No));
     Pessoa pessoa;
 
-    nome_e_rg(&pessoa);
-    tIni = time(NULL);
+    if(novo){
+        nome_e_rg(&pessoa);
+        tIni = time(NULL);
 
-    novo->p = pessoa;
-    novo->proximo = NULL;
-    fila->fim->proximo = novo;
-    fila->fim = novo;
-    fila->tam++;
-    m_n += 4;
-    
-    informacoes(pessoa,c_n, m_n);
-    tFim = time(NULL);
-    tempo_exe(tFim, tIni);
-    printf("\n%d° posicao na lista!", fila->tam);
+        novo->p = pessoa;
+        novo->proximo = NULL;
+        fila->fim->proximo = novo;
+        fila->fim = novo;
+        fila->tam++;
+        m_n += 4;
+        
+        informacoes(pessoa,c_n, m_n);
+        tFim = time(NULL);
+        tempo_exe(tFim, tIni);
+        printf("\n%d° posicao na lista!", fila->tam);
+    }
+    else
+        printf("\nErro ao alocar memoria!\n");
 }
 
 void inserir_posicao_n(Fila *fila){ //III
@@ -144,16 +152,19 @@ void inserir_posicao_n(Fila *fila){ //III
             aux = fila->prim;
             fila->prim = novo;
             fila->prim->proximo = aux;
+            m_n+= 3;
         }
         else{
             aux = fila->prim;
             for(i = 1; i < n; i++){
                 ant = aux;
                 aux = aux->proximo;
+                m_n+= 2;
             }
             aux2 = aux;
             ant->proximo = novo;
             novo->proximo = aux2;
+            m_n+= 4;
         }
         m_n += 2;
         fila->tam++;
@@ -177,17 +188,16 @@ void remover_do_inicio(Fila *fila){ //IV
 
     if(fila->prim){
         remover = fila->prim;
-        printf("\n----ELEMENTO REMOVIDO DO INICIO----\n");
-        printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
         fila->prim = remover->proximo;
-
-        m_n += 2;
-        c_n++;
         fila->tam--;
     }
     else
         printf("\nFILA VAZIA!\n");
 
+    m_n += 2;
+    c_n++;
+    printf("\n----ELEMENTO REMOVIDO DO INICIO----\n");
+    printf("\tNome: %s\n\tRg: %s\n", remover->p.nome, remover->p.rg);
     cn_mn(c_n, m_n); 
     tFim = time(NULL);
     tempo_exe(tFim, tIni);
