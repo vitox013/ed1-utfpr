@@ -112,31 +112,31 @@ void opcao_arquivo(char *nome){
 
     switch(opcao_arq){
     case 'a':
-        strcpy(nome, "NomeRG10.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG10.txt");
     break;
 
     case 'b':
-        strcpy(nome, "NomeRG50.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG50.txt");
     break;
 
     case 'c':
-        strcpy(nome, "NomeRG100.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG100.txt");
     break;
 
     case 'd':
-        strcpy(nome, "NomeRG1K.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG1K.txt");
     break;
 
     case 'e':
-        strcpy(nome, "NomeRG10K.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG10K.txt");
     break;
 
     case 'f':
-        strcpy(nome, "NomeRG1M.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG1M.txt");
     break;
 
     case 'g':
-        strcpy(nome, "NomeRG100M.txt");
+        strcpy(nome, "/home/vitor/filesED1/NomeRG100M.txt");
     break;
 
     default:
