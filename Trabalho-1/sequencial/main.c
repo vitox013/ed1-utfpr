@@ -51,27 +51,30 @@ void nome_e_rg(Pessoa *p){
     getchar();
 }
 
+void imprimir_pessoa_removida(Pessoa *removido){
+    printf("\n----ELEMENTO REMOVIDO----\n");
+    printf("Nome: %s\nRg: %s\n", removido->nome, removido->rg);
+}
+
 void inserir_inicio(Fila *f){// I
     Pessoa pessoa, aux, ant;
-
+    int i = f->ini;
     nome_e_rg(&pessoa);
-    if(f->ini < f->tam){
-        aux = f->vetor[f->ini];
-        f->vetor[f->ini] = pessoa;
-        f->ini++;
-        ant = f->vetor[f->ini];
-        f->vetor[f->ini] = aux;
-        f->ini++;
+    if(i < f->tam){
+        aux = f->vetor[i];
+        f->vetor[i] = pessoa;
+        i++;
+        ant = f->vetor[i];
+        f->vetor[i] = aux;
+        i++;
         f->fim++;
-        while(f->ini <= f->fim){
+        while(i <= f->fim){
             aux = ant;
-            ant = f->vetor[f->ini];
-            f->vetor[f->ini] = aux;
-            f->ini++;
+            ant = f->vetor[i];
+            f->vetor[i] = aux;
+            i++;
         }
-        f->ini = 0;
     }
-
 }
 
 void inserir_fim(Fila *f){// II
@@ -89,10 +92,11 @@ void inserir_fim(Fila *f){// II
 
 void inserir_posicao_n(Fila *f){// III
     Pessoa pessoa, aux, prox;
-    int n;
+    int i = f->ini, n;
     nome_e_rg(&pessoa);
-    printf("\nQual posicao deseja inserir?");
+    printf("\nQual posicao deseja inserir? \n");
     scanf("%d", &n);
+    n += f->ini;
     if(f->fim < f->tam){
         
         aux = f->vetor[n - 1];
@@ -100,22 +104,33 @@ void inserir_posicao_n(Fila *f){// III
         f->fim++;
         prox = f->vetor[n];
         f->vetor[n] = aux;
-        f->ini = n +1;
-        while(f->ini < f->fim){
+        i = n +1;
+        while(i < f->fim){
             aux = prox;
-            prox = f->vetor[f->ini];
-            f->vetor[f->ini] = aux;
-            f->ini++;
+            prox = f->vetor[i];
+            f->vetor[i] = aux;
+            i++;
         }
-        f->ini = 0;
     }
     else
         printf("\nFila cheia!\n");
 }
 
+void retirar_inicio(Fila *f){//IV
+    Pessoa removido;
+    int i = f->ini;
+
+    if(i < f->fim){
+        removido = f->vetor[i];
+        imprimir_pessoa_removida(&removido);
+        f->ini++;
+    }else
+        printf("\nFila vazia!\n");
+}
+
 void imprimir_fila(Fila *f){ //XIII
-    int i = 0;
     printf("\n-------FILA------\n");
+    int i = f->ini;
     while(i < f->fim){
         printf("\nNome: %s\nRG: %s\n", f->vetor[i].nome, f->vetor[i].rg);
         i++;
@@ -164,7 +179,7 @@ void menu_opcoes(){
         printf("\n\n1 - Inserir no INICIO\n");
         printf("2 - Inserir um no no FINAL\n");
         printf("3 - Inserir um no na POSICAO N\n");
-        //printf("4 - Retirar um no do INICIO\n");
+        printf("4 - Retirar um no do INICIO\n");
         //printf("5 - Retirar um no do FIM\n");
        // printf("6 - Retirar um no na POSICAO N\n");
         //printf("7 - Procurar no por RG\n");
@@ -206,7 +221,7 @@ int main(){
                 inserir_posicao_n(fila);
                 break;
             case 4:
-                //remover_do_inicio(fila); 
+                retirar_inicio(fila);
                 break;
             case 5:
                 //remover_do_fim(fila);
