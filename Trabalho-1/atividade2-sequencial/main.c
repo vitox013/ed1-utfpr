@@ -357,6 +357,8 @@ void remover_posicao_n(Fila *fila){ // VI
 
 void procurar_no(Fila *fila){ //XII
     No *aux = NULL;
+    time_t tIni, tFim;
+
     int rg_int;
     char rg[8];
 
@@ -367,7 +369,7 @@ void procurar_no(Fila *fila){ //XII
     
     aux = fila->prim;
     m_n++;
-  
+    tIni = time(NULL);
     while(aux->proximo){
         c_n++;
         if(strcmp(aux->p.rg, rg) == 0){
@@ -381,6 +383,9 @@ void procurar_no(Fila *fila){ //XII
     if(strcmp(aux->p.rg, rg) != 0)
         printf("\nRG nao encontrado!\n");
     c_n++;
+    cn_mn(c_n, m_n); 
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void imprimir_fila(Fila *fila){ //XIII 
@@ -411,7 +416,8 @@ void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
 }
 
 void ler_arquivo_e_inserir(char file[],Fila *fila){ // X
-
+    time_t tIni, tFim;
+    tIni = time(NULL);
     char copia_linha[50];
     char linhaCompleta[50];
     Pessoa pessoa;
@@ -455,6 +461,8 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ // X
     }
     else
         printf("\nErro ao abrir arquivo!\n");
+    tFim = time(NULL);
+    tempo_exe(tFim, tIni);
 }
 
 void opcao_arquivo(char *nome){
