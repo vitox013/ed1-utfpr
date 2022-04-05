@@ -128,6 +128,20 @@ void retirar_inicio(Fila *f){//IV
         printf("\nFila vazia!\n");
 }
 
+void retirar_fim(Fila *f){//V
+    Pessoa removido;
+    int i = f->ini;
+
+    if(f->ini != f->fim){
+        removido = f->vetor[f->fim -1];
+        imprimir_pessoa_removida(&removido);
+        f->fim--;
+    }
+    else
+        printf("\nErro ao retirar do fim, fila vazia!\n");
+
+}
+
 void imprimir_fila(Fila *f){ //XIII
     printf("\n-------FILA------\n");
     int i = f->ini;
@@ -180,7 +194,7 @@ void menu_opcoes(){
         printf("2 - Inserir um no no FINAL\n");
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
-        //printf("5 - Retirar um no do FIM\n");
+        printf("5 - Retirar um no do FIM\n");
        // printf("6 - Retirar um no na POSICAO N\n");
         //printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
@@ -224,7 +238,7 @@ int main(){
                 retirar_inicio(fila);
                 break;
             case 5:
-                //remover_do_fim(fila);
+                retirar_fim(fila);
                 break;    
             case 6:
             // remover_posicao_n(fila);
