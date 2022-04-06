@@ -14,6 +14,7 @@ typedef struct
     int fim;
     int ini;
     int tam;
+    int tam_fila;
     Pessoa *vetor;
 }Fila;
 
@@ -31,6 +32,7 @@ Fila* criar_fila(int tamanho){
     f->fim = 0;
     f->ini = 0;
     f->tam = tamanho;
+    f->tam_fila = 0;
     f->vetor = (Pessoa *)malloc(tamanho * sizeof(Pessoa));
     return f;
 }
@@ -74,6 +76,7 @@ void inserir_inicio(Fila *f){// I
             f->vetor[i] = aux;
             i++;
         }
+        f->tam_fila++;
     }
 }
 
@@ -85,6 +88,7 @@ void inserir_fim(Fila *f){// II
     if(f->fim < f->tam){
         f->vetor[f->fim] = pessoa;
         f->fim++;
+        f->tam_fila++;
     }
     else
         printf("\nFila cheia!\n");
@@ -111,6 +115,7 @@ void inserir_posicao_n(Fila *f){// III
             f->vetor[i] = aux;
             i++;
         }
+        f->tam_fila++;
     }
     else
         printf("\nFila cheia!\n");
@@ -124,32 +129,81 @@ void retirar_inicio(Fila *f){//IV
         removido = f->vetor[i];
         imprimir_pessoa_removida(&removido);
         f->ini++;
+        f->tam_fila--;
     }else
         printf("\nFila vazia!\n");
 }
 
 void retirar_fim(Fila *f){//V
     Pessoa removido;
-    int i = f->ini;
 
-    if(f->ini != f->fim){
+    if(f->ini < f->fim){
         removido = f->vetor[f->fim -1];
         imprimir_pessoa_removida(&removido);
         f->fim--;
+        f->tam_fila--;
     }
     else
         printf("\nErro ao retirar do fim, fila vazia!\n");
 
 }
 
+void retirar_posicao_n(Fila *f){//VI
+    Pessoa removido, aux, prox;
+    int i = f->ini, n;
+
+    printf("\nQual posicao deseja retirar? \n");
+    scanf("%d", &n);
+    n += f->ini;
+
+    if(f->ini < f->fim){
+        removido = f->vetor[n - 1];
+        imprimir_pessoa_removida(&removido);
+        aux = f->vetor[n + 1];
+        prox = f->vetor[n];
+        f->vetor[n - 1] = prox;
+        i = n;
+        f->fim--;
+        while(i < f->fim){
+            f->vetor[i] = aux;
+            i++;
+            aux = f->vetor[i + 1];
+        }
+        f->tam_fila--;
+    }
+    else
+        printf("\nErro ao retirar, Fila vazia!\n");
+}
+
+void procurar_rg(Fila *f){
+    int rg_int, i;
+    char rg[8];
+
+    i = f->ini;
+
+    getchar();
+    printf("\nDigite o RG que esta procurando: ");
+    scanf("%d", &rg_int);
+    sprintf(rg, "%d", rg_int);
+
+    while(i < f->fim){
+        if(strcmp(f->vetor[i].rg, rg) == 0){
+        printf("\nPessoa encontrada na %d posicao!\n", i + 1);
+        printf("Nome: %s\n\n", f->vetor[i].nome);
+        break;
+        }
+        i++;
+    }
+}
+
 void imprimir_fila(Fila *f){ //XIII
-    printf("\n-------FILA------\n");
+    printf("\n-------FILA TAM: %d------\n", f->tam_fila);
     int i = f->ini;
     while(i < f->fim){
         printf("\nNome: %s\nRG: %s\n", f->vetor[i].nome, f->vetor[i].rg);
         i++;
     }
-    printf("\n-----FIM FILA-----\n");
+    printf("\n-----FIM FILA TAM: %d-----\n", f->tam_fila);
 }
 
 void ler_arquivo_e_inserir(char file[], Fila *f){ //X
@@ -176,6 +230,7 @@ void ler_arquivo_e_inserir(char file[], Fila *f){ //X
             if(f->fim < f->tam){
                 f->vetor[f->fim] = pessoa;
                 (f->fim)++;
+                (f->tam_fila)++;
             }
             else
                 printf("\nFila cheia!\n");
@@ -195,8 +250,8 @@ void menu_opcoes(){
         printf("3 - Inserir um no na POSICAO N\n");
         printf("4 - Retirar um no do INICIO\n");
         printf("5 - Retirar um no do FIM\n");
-       // printf("6 - Retirar um no na POSICAO N\n");
-        //printf("7 - Procurar no por RG\n");
+        printf("6 - Retirar um no na POSICAO N\n");
+        printf("7 - Procurar no por RG\n");
         printf("8 - Mostrar lista na tela\n");
        // printf("9 - Salvar a lista em um arquivo\n");
         printf("10 - Ler a lista de um arquivo\n");
@@ -241,10 +296,10 @@ int main(){
                 retirar_fim(fila);
                 break;    
             case 6:
-            // remover_posicao_n(fila);
+                retirar_posicao_n(fila);
                 break;
             case 7:
-                //procurar_no(fila);
+                procurar_rg(fila);
                 break;
             case 8:
                 imprimir_fila(fila);  
