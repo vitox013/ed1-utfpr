@@ -175,7 +175,7 @@ void retirar_posicao_n(Fila *f){//VI
         printf("\nErro ao retirar, Fila vazia!\n");
 }
 
-void procurar_rg(Fila *f){
+void procurar_rg(Fila *f){//XII
     int rg_int, i;
     char rg[8];
 
@@ -204,6 +204,25 @@ void imprimir_fila(Fila *f){ //XIII
         i++;
     }
     printf("\n-----FIM FILA TAM: %d-----\n", f->tam_fila);
+}
+
+void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX
+    FILE *arquivo = fopen(nome_lista, "w");
+    int i = f->ini;
+
+    if(arquivo){
+        if(i < f->fim){
+            while(i < f->fim){
+                fprintf(arquivo,"%s,%s\n", f->vetor[i].nome, f->vetor[i].rg);
+                i++;
+            }
+        }
+        else
+            printf("\nFila vazia, erro ao salvar na lista!\n");
+    fclose(arquivo);
+    }
+    else
+        printf("\nErro ao abrir o arquivo!\n");
 }
 
 void ler_arquivo_e_inserir(char file[], Fila *f){ //X
@@ -241,21 +260,19 @@ void ler_arquivo_e_inserir(char file[], Fila *f){ //X
         printf("\nERRO AO ABRIR O ARQUIVO!\n");
 }
 
-
-
 void menu_opcoes(){
     
-        printf("\n\n1 - Inserir no INICIO\n");
-        printf("2 - Inserir um no no FINAL\n");
-        printf("3 - Inserir um no na POSICAO N\n");
-        printf("4 - Retirar um no do INICIO\n");
-        printf("5 - Retirar um no do FIM\n");
-        printf("6 - Retirar um no na POSICAO N\n");
-        printf("7 - Procurar no por RG\n");
-        printf("8 - Mostrar lista na tela\n");
-       // printf("9 - Salvar a lista em um arquivo\n");
-        printf("10 - Ler a lista de um arquivo\n");
-        printf("\n11 - Sair\n\n");
+    printf("\n\n1 - Inserir no INICIO\n");
+    printf("2 - Inserir um no no FINAL\n");
+    printf("3 - Inserir um no na POSICAO N\n");
+    printf("4 - Retirar um no do INICIO\n");
+    printf("5 - Retirar um no do FIM\n");
+    printf("6 - Retirar um no na POSICAO N\n");
+    printf("7 - Procurar no por RG\n");
+    printf("8 - Mostrar lista na tela\n");
+    printf("9 - Salvar a lista em um arquivo\n");
+    printf("10 - Ler a lista de um arquivo\n");
+    printf("\n11 - Sair\n\n");
 }
 
 void mostrar_menu(){
@@ -269,6 +286,7 @@ int main(){
     int tamanho = 30;
     Fila *fila = criar_fila(tamanho);
     char file_name[50] = {"/home/vitor/filesED1/NomeRG10.txt"};
+    char nome_lista[50] = {};
     int opcao;
     
 
@@ -305,10 +323,10 @@ int main(){
                 imprimir_fila(fila);  
                 break;
             case 9:
-                //printf("\nQual nome seu arquivo recebera?\n");
-                //getchar();
-                //scanf("%50[^\n]", nome_lista);
-                //salvar_lista_em_arquivo(nome_lista, &fila);
+                printf("\nQual nome seu arquivo recebera?\n");
+                getchar();
+                scanf("%50[^\n]", nome_lista);
+                salvar_lista_em_arquivo(nome_lista, fila);
                 break;
             case 10:
                 ler_arquivo_e_inserir(file_name, fila);
