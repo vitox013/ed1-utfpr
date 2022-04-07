@@ -8,8 +8,8 @@ int c_n, m_n;
 char opcao2;
 
 typedef struct{
-    char nome[20];
     char rg[9];
+    char nome[20];
 }Pessoa;
 
 typedef struct no
@@ -22,37 +22,37 @@ typedef struct{
     No *prim;
     No *fim;
     int tam;
-}Fila;
+}Lista;
 
 void cn_mn(int cn, int mn);
 void tempo_exe(int tFim, int tIni);
 void verificar_enter_rg(Pessoa *rg);
 void nome_e_rg(Pessoa *p);
 void imprimir_pessoa_removida(No *remover);
-void criar_fila(Fila *fila);
+void criar_Lista(Lista *lista);
 void imprimir_pessoa(Pessoa p);
 void informacoes(Pessoa pessoa, int cn, int mn);
-void inserir_inicio(Fila *fila);
-void inserir_fim(Fila *fila);
-void inserir_posicao_n(Fila *fila);
-void remover_do_inicio(Fila *fila);
-void remover_do_fim(Fila *fila);
-void remover_posicao_n(Fila *fila);
-void procurar_no(Fila *fila);
-void imprimir_fila(Fila *fila);
-void salvar_lista_em_arquivo(char nome_lista[], Fila *fila);
-void ler_arquivo_e_inserir(char file[],Fila *fila);
+void inserir_inicio(Lista *lista);
+void inserir_fim(Lista *lista);
+void inserir_posicao_n(Lista *lista);
+void remover_do_inicio(Lista *lista);
+void remover_do_fim(Lista *lista);
+void remover_posicao_n(Lista *lista);
+void procurar_no(Lista *lista);
+void imprimir_Lista(Lista *lista);
+void salvar_lista_em_arquivo(char nome_lista[], Lista *lista);
+void ler_arquivo_e_inserir(char file[],Lista *lista);
 void opcao_arquivo(char *nome);
 void menu_opcoes();
 void mostrar_menu();
 
 int main(){
 
-    Fila fila; 
+    Lista lista; 
     char file_name[50] = {}, nome_lista[50] = {};
     int opcao;
 
-    criar_fila(&fila);
+    criar_Lista(&lista);
            
     do
     {        
@@ -61,38 +61,38 @@ int main(){
         switch (opcao)
         {
         case 1:
-            inserir_inicio(&fila);
+            inserir_inicio(&lista);
             break;
         case 2:
-            inserir_fim(&fila); 
+            inserir_fim(&lista); 
             break;
         case 3:
-            inserir_posicao_n(&fila);
+            inserir_posicao_n(&lista);
             break;
         case 4:
-            remover_do_inicio(&fila); 
+            remover_do_inicio(&lista); 
             break;
         case 5:
-            remover_do_fim(&fila);
+            remover_do_fim(&lista);
             break;    
         case 6:
-            remover_posicao_n(&fila);
+            remover_posicao_n(&lista);
             break;
         case 7:
-            procurar_no(&fila);
+            procurar_no(&lista);
             break;
         case 8:
-            imprimir_fila(&fila);    
+            imprimir_Lista(&lista);    
             break;
         case 9:
             printf("\nQual nome seu arquivo recebera?\n");
             getchar();
             scanf("%50[^\n]", nome_lista);
-            salvar_lista_em_arquivo(nome_lista, &fila);
+            salvar_lista_em_arquivo(nome_lista, &lista);
             break;
         case 10:
             opcao_arquivo(file_name);
-            ler_arquivo_e_inserir(file_name, &fila);
+            ler_arquivo_e_inserir(file_name, &lista);
             break;
         case 11:
             break;
@@ -150,10 +150,10 @@ void imprimir_pessoa_removida(No *remover){
     printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
 }
 
-void criar_fila(Fila *fila){
-    fila->prim = NULL;
-    fila->fim = NULL;
-    fila->tam = 0;
+void criar_Lista(Lista *lista){
+    lista->prim = NULL;
+    lista->fim = NULL;
+    lista->tam = 0;
 }
 
 void imprimir_pessoa(Pessoa p){
@@ -166,7 +166,7 @@ void informacoes(Pessoa pessoa, int cn, int mn){
     cn_mn(cn, mn); 
 }
 
-void inserir_inicio(Fila *fila){ //I
+void inserir_inicio(Lista *lista){ //I
     time_t tIni, tFim; 
     No *aux, *novo = malloc(sizeof(No));
     Pessoa pessoa;
@@ -178,19 +178,19 @@ void inserir_inicio(Fila *fila){ //I
     novo->proximo = NULL;
 
     if(novo){
-        if(fila->prim == NULL){
+        if(lista->prim == NULL){
             c_n++;
-            fila->prim = novo;
-            fila->fim = novo;
+            lista->prim = novo;
+            lista->fim = novo;
             m_n += 2;
         }
         else{
-            aux = fila->prim;
-            fila->prim = novo; 
-            fila->prim->proximo = aux;
+            aux = lista->prim;
+            lista->prim = novo; 
+            lista->prim->proximo = aux;
             m_n += 3;
         }
-        fila->tam++;
+        lista->tam++;
         m_n+= 2;
         informacoes(pessoa,c_n, m_n);
         tFim = time(NULL);
@@ -201,7 +201,7 @@ void inserir_inicio(Fila *fila){ //I
         printf("\nErro ao alocar memoria!\n");
 }
 
-void inserir_fim(Fila *fila){ // II
+void inserir_fim(Lista *lista){ // II
     time_t tIni, tFim;
     No *novo = malloc(sizeof(No));
     Pessoa pessoa;
@@ -212,21 +212,21 @@ void inserir_fim(Fila *fila){ // II
 
         novo->p = pessoa;
         novo->proximo = NULL;
-        fila->fim->proximo = novo;
-        fila->fim = novo;
-        fila->tam++;
+        lista->fim->proximo = novo;
+        lista->fim = novo;
+        lista->tam++;
         m_n += 4;
         
         informacoes(pessoa,c_n, m_n);
         tFim = time(NULL);
         tempo_exe(tFim, tIni);
-        printf("\n%d° posicao na lista!", fila->tam);
+        printf("\n%d° posicao na lista!", lista->tam);
     }
     else
         printf("\nErro ao alocar memoria!\n");
 }
 
-void inserir_posicao_n(Fila *fila){ //III
+void inserir_posicao_n(Lista *lista){ //III
     time_t tIni, tFim;
     No *novo = malloc(sizeof(No)), *aux = NULL, *ant, *aux2;
     Pessoa pessoa;
@@ -241,14 +241,14 @@ void inserir_posicao_n(Fila *fila){ //III
         novo->p = pessoa;
         novo->proximo = NULL;
         if(n == 1){
-            aux = fila->prim;
-            fila->prim = novo;
-            fila->prim->proximo = aux;
+            aux = lista->prim;
+            lista->prim = novo;
+            lista->prim->proximo = aux;
             m_n+= 3;
             c_n++;
         }
         else{
-            aux = fila->prim;
+            aux = lista->prim;
             for(i = 1; i < n; i++){
                 ant = aux;
                 aux = aux->proximo;
@@ -261,7 +261,7 @@ void inserir_posicao_n(Fila *fila){ //III
             m_n+= 4;
         }
         m_n += 2;
-        fila->tam++;
+        lista->tam++;
     
     printf("\nNo inserido com sucesso na %d° posicao!\n\n", n);
     }
@@ -274,19 +274,19 @@ void inserir_posicao_n(Fila *fila){ //III
     printf("\n\n%d° posicao na lista!", n);
 }
 
-void remover_do_inicio(Fila *fila){ //IV 
+void remover_do_inicio(Lista *lista){ //IV 
     time_t tIni, tFim;
     tIni = time(NULL);
 
     No *remover = NULL;
 
-    if(fila->prim){
-        remover = fila->prim;
-        fila->prim = remover->proximo;
-        fila->tam--;
+    if(lista->prim){
+        remover = lista->prim;
+        lista->prim = remover->proximo;
+        lista->tam--;
     }
     else
-        printf("\nFILA VAZIA!\n");
+        printf("\nLista VAZIA!\n");
 
     m_n += 2;
     c_n++;
@@ -296,13 +296,13 @@ void remover_do_inicio(Fila *fila){ //IV
     tempo_exe(tFim, tIni);
 }
 
-void remover_do_fim(Fila *fila){ //V 
+void remover_do_fim(Lista *lista){ //V 
     time_t tIni, tFim;
     tIni = time(NULL);
     No *remover = NULL, *aux = NULL, *ant;
     
-    aux = fila->prim;
-    remover = fila->fim;
+    aux = lista->prim;
+    remover = lista->fim;
     while(aux->proximo){
         ant = aux;
         aux = aux->proximo;
@@ -310,10 +310,10 @@ void remover_do_fim(Fila *fila){ //V
         c_n++;
     }
     ant->proximo = NULL;
-    fila->fim = ant;
+    lista->fim = ant;
     
     m_n += 4;
-    fila->tam--;
+    lista->tam--;
         
     imprimir_pessoa_removida(remover);
     
@@ -322,7 +322,7 @@ void remover_do_fim(Fila *fila){ //V
     tempo_exe(tFim, tIni);
 }
 
-void remover_posicao_n(Fila *fila){ // VI
+void remover_posicao_n(Lista *lista){ // VI
     time_t tIni, tFim;
     No  *aux = NULL, *remover = NULL, *proximo_no = NULL, *ant;
     int i, n;
@@ -332,14 +332,14 @@ void remover_posicao_n(Fila *fila){ // VI
     tIni = time(NULL);
     
     
-    if(fila->prim){
+    if(lista->prim){
         if(n == 1){
-            remover = fila->prim;
-            fila->prim = fila->prim->proximo;
+            remover = lista->prim;
+            lista->prim = lista->prim->proximo;
             m_n+= 2;
         }
         else{
-            aux = fila->prim;
+            aux = lista->prim;
             for(i = 1; i < n; i++){
                 ant = aux;
                 aux = aux->proximo;
@@ -350,19 +350,19 @@ void remover_posicao_n(Fila *fila){ // VI
             ant->proximo = proximo_no;
             m_n+= 4;
         }
-        fila->tam--;
+        lista->tam--;
     
     imprimir_pessoa_removida(remover);
     }
     else
-        printf("\nFila vazia!\n");
+        printf("\nLista vazia!\n");
 
     cn_mn(c_n, m_n); 
     tFim = time(NULL);
     tempo_exe(tFim, tIni);
 }
 
-void procurar_no(Fila *fila){ //XII
+void procurar_no(Lista *lista){ //XII
     No *aux = NULL;
     time_t tIni, tFim;
 
@@ -374,7 +374,7 @@ void procurar_no(Fila *fila){ //XII
     scanf("%d", &rg_int);
     sprintf(rg, "%d", rg_int);
     
-    aux = fila->prim;
+    aux = lista->prim;
     m_n++;
     tIni = time(NULL);
     while(aux->proximo){
@@ -395,21 +395,21 @@ void procurar_no(Fila *fila){ //XII
     tempo_exe(tFim, tIni);
 }
 
-void imprimir_fila(Fila *fila){ //XIII 
+void imprimir_Lista(Lista *lista){ //XIII 
 
-    No *aux = fila->prim;
-    printf("\n-----------FILA TAM:%d------------\n", fila->tam);
+    No *aux = lista->prim;
+    printf("\n-----------Lista TAM:%d------------\n", lista->tam);
     while(aux){
         printf("Nome: %s\nRg: %s\n\n", aux->p.nome, aux->p.rg);
         aux = aux->proximo;
     }
-    printf("\n-----------FIM FILA TAM:%d-----------\n\n", fila->tam);
+    printf("\n-----------FIM Lista TAM:%d-----------\n\n", lista->tam);
 }
 
-void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
+void salvar_lista_em_arquivo(char nome_lista[], Lista *lista){ //IX
 
     FILE *arquivo = fopen(nome_lista, "w");
-    No *aux = fila->prim;
+    No *aux = lista->prim;
 
     if(arquivo){
         while(aux){
@@ -422,7 +422,7 @@ void salvar_lista_em_arquivo(char nome_lista[], Fila *fila){ //IX
         printf("\nErro ao abrir o arquivo!\n\n");
 }
 
-void ler_arquivo_e_inserir(char file[],Fila *fila){ // X
+void ler_arquivo_e_inserir(char file[],Lista *lista){ // X
     time_t tIni, tFim;
     tIni = time(NULL);
     char copia_linha[50];
@@ -450,15 +450,15 @@ void ler_arquivo_e_inserir(char file[],Fila *fila){ // X
             if(novo){
                 novo->p = pessoa;
                 novo->proximo = NULL;
-                if(fila->prim == NULL){
-                    fila->prim = novo;
-                    fila->fim = novo;
+                if(lista->prim == NULL){
+                    lista->prim = novo;
+                    lista->fim = novo;
                 }    
                 else{
-                    fila->fim->proximo = novo;
-                    fila->fim = novo;
+                    lista->fim->proximo = novo;
+                    lista->fim = novo;
                 }
-                fila->tam++;
+                lista->tam++;
             }
             else
                 printf("\nErro ao alocar memoria\n");
