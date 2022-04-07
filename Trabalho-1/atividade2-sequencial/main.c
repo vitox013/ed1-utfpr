@@ -94,11 +94,18 @@ int main(){
             opcao_arquivo(file_name);
             ler_arquivo_e_inserir(file_name, &fila);
             break;
+        case 11:
+            break;
         default:
             printf("\nOpcao invalida! Digite novamente!\n");
             break;
         }
+        if(opcao != 11){
         mostrar_menu();
+        system("clear");
+        }
+        else
+            break;
     } while (opcao != 11 && opcao2 != 'n' && opcao2 != 'N');
 
     return 0;
