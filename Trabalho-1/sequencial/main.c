@@ -72,7 +72,7 @@ void nome_e_rg(Pessoa *p){
 }
 
 void imprimir_pessoa(Pessoa p){
-    printf("\n\n\n\nNome: %s\nRg: %s\n", p.nome, p.rg);
+    printf("\nNome: %s\nRg: %s\n", p.nome, p.rg);
 }
 
 void informacoes(Pessoa pessoa, int cn, int mn){
@@ -265,11 +265,15 @@ void procurar_rg(Fila *f){//XII
 void imprimir_fila(Fila *f){ //XIII
     printf("\n-------FILA TAM: %d------\n", f->tam_fila);
     int i = f->ini;
+    tIni = time(NULL);
     while(i < f->fim){
         printf("\nNome: %s\nRG: %s\n", f->vetor[i].nome, f->vetor[i].rg);
         i++;
     }
     printf("\n-----FIM FILA TAM: %d-----\n", f->tam_fila);
+    tFim = time(NULL);
+
+    tempo_exe(tFim, tIni);
 }
 
 void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX

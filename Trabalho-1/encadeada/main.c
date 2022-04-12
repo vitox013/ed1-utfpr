@@ -8,8 +8,9 @@ int c_n, m_n;
 char opcao2;
 
 typedef struct{
-    char rg[9];
     char nome[20];
+    char rg[9];
+    
 }Pessoa;
 
 typedef struct no
@@ -147,7 +148,7 @@ void nome_e_rg(Pessoa *p){
 
 void imprimir_pessoa_removida(No *remover){
     printf("\n----ELEMENTO REMOVIDO----\n");
-    printf("Nome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
+    printf("\nNome: %s\nRg: %s\n", remover->p.nome, remover->p.rg);
 }
 
 void criar_Lista(Lista *lista){
@@ -278,7 +279,7 @@ void remover_do_inicio(Lista *lista){ //IV
     time_t tIni, tFim;
     tIni = time(NULL);
 
-    No *remover = NULL;
+    No *remover;
 
     if(lista->prim){
         remover = lista->prim;
@@ -299,7 +300,7 @@ void remover_do_inicio(Lista *lista){ //IV
 void remover_do_fim(Lista *lista){ //V 
     time_t tIni, tFim;
     tIni = time(NULL);
-    No *remover = NULL, *aux = NULL, *ant;
+    No *remover, *aux = NULL, *ant;
     
     aux = lista->prim;
     remover = lista->fim;
@@ -324,7 +325,7 @@ void remover_do_fim(Lista *lista){ //V
 
 void remover_posicao_n(Lista *lista){ // VI
     time_t tIni, tFim;
-    No  *aux = NULL, *remover = NULL, *proximo_no = NULL, *ant;
+    No  *aux = NULL, *remover, *proximo_no = NULL, *ant;
     int i, n;
     printf("\nQual posicao deseja remover?\n");
     scanf("%d", &n);
@@ -344,6 +345,7 @@ void remover_posicao_n(Lista *lista){ // VI
                 ant = aux;
                 aux = aux->proximo;
                 m_n+= 2;
+                c_n++;
             }
             remover = aux;
             proximo_no = aux->proximo;
@@ -423,8 +425,6 @@ void salvar_lista_em_arquivo(char nome_lista[], Lista *lista){ //IX
 }
 
 void ler_arquivo_e_inserir(char file[],Lista *lista){ // X
-    time_t tIni, tFim;
-    tIni = time(NULL);
     char copia_linha[50];
     char linhaCompleta[50];
     Pessoa pessoa;
@@ -435,7 +435,7 @@ void ler_arquivo_e_inserir(char file[],Lista *lista){ // X
     if(arquivo){
         while(fgets(linhaCompleta, 50, arquivo)){
             strcpy(copia_linha, linhaCompleta);
-            strcpy(pessoa.nome, strtok(linhaCompleta, ",") );
+            strcpy(pessoa.nome, strtok(linhaCompleta, ","));
 
             rg = strtok(copia_linha, ",");
             while(rg){
@@ -468,8 +468,6 @@ void ler_arquivo_e_inserir(char file[],Lista *lista){ // X
     }
     else
         printf("\nErro ao abrir arquivo!\n");
-    tFim = time(NULL);
-    tempo_exe(tFim, tIni);
 }
 
 void opcao_arquivo(char *nome){
