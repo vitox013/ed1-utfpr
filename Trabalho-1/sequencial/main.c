@@ -84,16 +84,15 @@ void inserir_inicio(Pessoa vetor[], int tam){// I
     informacoes(pessoa, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-/*
-void inserir_fim(Fila *f){// II
+
+void inserir_fim(Pessoa vetor[], int tam){// II
     Pessoa pessoa;
 
     nome_e_rg(&pessoa);
     tIni = time(NULL);
-    if(f->fim < f->tam){
-        f->vetor[f->fim] = pessoa;
-        f->fim++;
-        f->tam_fila++;
+    if(fim < tam){
+        vetor[fim] = pessoa;
+        fim++;
         c_n++;
         m_n++;
     }
@@ -104,7 +103,7 @@ void inserir_fim(Fila *f){// II
     informacoes(pessoa, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-
+/*
 void inserir_posicao_n(Fila *f){// III
     Pessoa pessoa, aux, prox;
     int i = f->ini, n;
@@ -423,9 +422,10 @@ int main(){
             case 1:
                 inserir_inicio(vetor, tam);
                 break;
-            /*case 2:
-                inserir_fim(fila); 
+            case 2:
+                inserir_fim(vetor, tam); 
                 break;
+            /*
             case 3:
                 inserir_posicao_n(fila);
                 break;
