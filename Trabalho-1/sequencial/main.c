@@ -49,13 +49,13 @@ void informacoes(Pessoa pessoa, int cn, int mn){
     cn_mn(cn, mn); 
 }
 
-void inserir_inicio(Pessoa vetor[], int tam){// I
+void inserir_inicio(Pessoa vetor[]){// I
     Pessoa pessoa, aux, aux2;
     int i = 0;
     nome_e_rg(&pessoa);
     tIni = time(NULL);
 
-    if(i < tam){
+    if(i < fim){
         fim++;
         aux = vetor[i];
         while(i <= fim){ 
@@ -192,22 +192,17 @@ void retirar_posicao_n(Pessoa vetor[]){//VI
     tempo_exe(tFim, tIni);
 }
 
-/*
-void procurar_rg(Fila *f){//XII
-    int rg_int, i;
-    char rg[8];
 
-    i = ini;
+void procurar_rg(Pessoa vetor[]){//XII
+    int rg, i = 0;
 
-    getchar();
     printf("\nDigite o RG que esta procurando: ");
-    scanf("%d", &rg_int);
+    scanf("%d", &rg);
     tIni = time(NULL);
-    sprintf(rg, "%d", rg_int);
 
     while(i < fim){
         c_n++;
-        if(strcmp(vetor[i].rg, rg) == 0){
+        if(vetor[i].rg == rg){
         printf("\nPessoa encontrada na %d posicao!\n", i + 1);
         printf("Nome: %s\n\n", vetor[i].nome);
         break;
@@ -218,7 +213,7 @@ void procurar_rg(Fila *f){//XII
     cn_mn(c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-*/
+
 void imprimir_fila(Pessoa vetor[]){ //XIII
     printf("\n-------FILA TAM: %d------\n", fim);
     int i = 0;
@@ -391,8 +386,8 @@ int tam_arquivo(){
 int main(){
 
     
-    int tam = tam_arquivo();
-    Pessoa vetor[tam];
+    long int tam = tam_arquivo();
+    Pessoa *vetor = (Pessoa *)malloc(tam * sizeof(Pessoa));
     char file_name[50] = {};
     char nome_lista[50] = {};
     int opcao;
@@ -406,7 +401,7 @@ int main(){
             switch (opcao)
             {
             case 1:
-                inserir_inicio(vetor, tam);
+                inserir_inicio(vetor);
                 break;
             case 2:
                 inserir_fim(vetor, tam); 
@@ -427,35 +422,35 @@ int main(){
             case 6:
                 retirar_posicao_n(vetor);
                 break;
-            /*
+            
             case 7:
-                procurar_rg(fila);
+                procurar_rg(vetor);
                 break;
-            */
             case 8:
                 imprimir_fila(vetor);  
                 break;
-            /*
+            
             case 9:
                 printf("\nQual nome seu arquivo recebera?\n");
                 getchar();
                 scanf("%50[^\n]", nome_lista);
                 salvar_lista_em_arquivo(nome_lista, fila);
                 break;
-                */
+                
             case 10:
                 opcao_arquivo(file_name);
                 ler_arquivo_e_inserir(file_name, vetor, tam);
                 break;
             case 11:
-                exit(0);
+                break;
             default:
                 printf("\nOpcao invalida! Digite novamente!\n");
                 break;
             }
-            mostrar_menu();
+            if(opcao != 11)
+                mostrar_menu();
             system("clear");
-        } while (opcao2 != 'n' && opcao2 != 'N');
-
+        } while (opcao != 11 && opcao2 != 'n' && opcao2 != 'N');
+    free(vetor);
     return 0;
 }
