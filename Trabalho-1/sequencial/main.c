@@ -12,7 +12,7 @@ time_t tIni, tFim;
 
 typedef struct{
     char nome[17];
-    char rg[9];
+    int rg;
 } Pessoa;
 
 void cn_mn(int cn, int mn){
@@ -29,15 +29,6 @@ void tempo_exe(int tFim, int tIni){
     printf("\nTempo de execucao da funcao: %.2f sec", tExecucao);
 }
 
-void verificar_enter_rg(Pessoa *rg){
-    int i;
-    
-    for(i = 0; i < 9;i++){
-        if((*rg).rg[i] == '\n')
-            (*rg).rg[i] = '\0';
-    }
-}
-
 void nome_e_rg(Pessoa *p){
 
     printf("\nDigite o nome: ");
@@ -45,12 +36,11 @@ void nome_e_rg(Pessoa *p){
     scanf("%20[^\n]",p->nome);
     getchar();
     printf("\nDigite o RG (8 digitos): ");
-    scanf("%8[^\n]",p->rg);
-    getchar();
+    scanf("%d",&p->rg);
 }
 
 void imprimir_pessoa(Pessoa p){
-    printf("\nNome: %s\nRg: %s\n", p.nome, p.rg);
+    printf("\nNome: %s\nRg: %d\n", p.nome, p.rg);
 }
 
 void informacoes(Pessoa pessoa, int cn, int mn){
@@ -134,18 +124,18 @@ void inserir_posicao_n(Pessoa vetor[], int tam){// III
     tempo_exe(tFim, tIni);
 }
 
-void retirar_inicio(Pessoa vetor[], int tam){//IV
+void retirar_inicio(Pessoa vetor[]){//IV
     tIni = time(NULL);
     Pessoa removido;
     int i = 0;
 
     if(i < fim){
         removido = vetor[i];
-        m_n++;
-        for(i; i < fim; i++){
+        while( i < fim){
             vetor[i] = vetor[i + 1];
             c_n++;
             m_n++;
+            i++;
         }
         fim--;
 
@@ -160,7 +150,7 @@ void retirar_inicio(Pessoa vetor[], int tam){//IV
         printf("\nFila vazia!\n");
 }
 
-void retirar_fim(Pessoa vetor[], int tam){//V
+void retirar_fim(Pessoa vetor[]){//V
     Pessoa removido;
     tIni = time(NULL);
     int i = 0;
@@ -175,32 +165,24 @@ void retirar_fim(Pessoa vetor[], int tam){//V
     informacoes(removido, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-/*
-void retirar_posicao_n(Fila *f){//VI
-    Pessoa removido, aux, prox;
-    int i = ini, n;
+
+void retirar_posicao_n(Pessoa vetor[]){//VI
+    Pessoa removido;
+    int n;
 
     printf("\nQual posicao deseja retirar? \n");
     scanf("%d", &n);
-    n += ini;
-
+    
     tIni = time(NULL);
-    if(ini < fim){
+    if(n < fim){
         removido = vetor[n - 1];
-        aux = vetor[n + 1];
-        prox = vetor[n];
-        vetor[n - 1] = prox;
-        i = n;
-        fim--;
-        m_n+= 5;
-        while(i < fim){
-            vetor[i] = aux;
-            i++;
-            aux = vetor[i + 1];
+        while(n < fim){
+            vetor[n - 1] = vetor[n];
+            n++;
             c_n++;
-            m_n+= 2;
+            m_n++;
         }
-        tam_fila--;
+        fim--;
     }
     else
         printf("\nErro ao retirar, Fila vazia!\n");
@@ -210,6 +192,7 @@ void retirar_posicao_n(Fila *f){//VI
     tempo_exe(tFim, tIni);
 }
 
+/*
 void procurar_rg(Fila *f){//XII
     int rg_int, i;
     char rg[8];
@@ -241,7 +224,7 @@ void imprimir_fila(Pessoa vetor[]){ //XIII
     int i = 0;
     tIni = time(NULL);
     while(i < fim){
-        printf("\nNome: %s\nRG: %s\n", vetor[i].nome, vetor[i].rg);
+        printf("\nNome: %s\nRG: %d\n", vetor[i].nome, vetor[i].rg);
         i++;
     }
     printf("\n-----FIM FILA TAM: %d-----\n", fim);
@@ -275,6 +258,7 @@ void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //X
     char linha_completa[50];
     Pessoa pessoa;
     char *rg;
+    char rg2[9];
     FILE *arquivo = fopen(file, "r");
 
     if(arquivo){
@@ -283,12 +267,13 @@ void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //X
             strcpy(pessoa.nome,strtok(linha_completa, ","));
 
             rg = strtok(copia_linha, ",");
+
             while(rg){
-                strcpy(pessoa.rg, rg);
+                strcpy(rg2, rg);
                 rg = strtok(NULL, ",");
             }
 
-            verificar_enter_rg(&pessoa);
+            pessoa.rg = strtol(rg2, NULL, 10);
 
             if(fim < tam){
                 vetor[fim] = pessoa;
@@ -432,16 +417,17 @@ int main(){
                 break;
             
             case 4:
-                retirar_inicio(vetor, tam);
+                retirar_inicio(vetor);
                 break;
             
             case 5:
-                retirar_fim(vetor, tam);
+                retirar_fim(vetor);
+                break;
+            
+            case 6:
+                retirar_posicao_n(vetor);
                 break;
             /*
-            case 6:
-                retirar_posicao_n(fila);
-                break;
             case 7:
                 procurar_rg(fila);
                 break;
