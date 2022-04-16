@@ -233,8 +233,8 @@ void menu_ordenar(){
     printf("6 - Merge Sort\n\n");
 }
 
-void selection_sort(Pessoa vetor[]){ //h) I. git reset --hard a0592ef  -- mais eficiente
-                                        //   git reset --hard 5776755  -- menos eficiente
+void selection_sort(Pessoa vetor[]){ //h) I. git checkout a0592ef  -- mais eficiente
+                                        //   git checkout 5776755  -- menos eficiente
     tIni = time(NULL);
     int i = 0, j, menor;
     Pessoa troca;
