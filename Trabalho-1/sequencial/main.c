@@ -227,15 +227,15 @@ void imprimir_fila(Pessoa vetor[]){ //XIII
 
     tempo_exe(tFim, tIni);
 }
-/*
-void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX
+
+void salvar_lista_em_arquivo(char nome_lista[], Pessoa vetor[]){//IX
     FILE *arquivo = fopen(nome_lista, "w");
-    int i = ini;
+    int i = 0;
 
     if(arquivo){
         if(i < fim){
             while(i < fim){
-                fprintf(arquivo,"%s,%s\n", vetor[i].nome, vetor[i].rg);
+                fprintf(arquivo,"%s,%d\n", vetor[i].nome, vetor[i].rg);
                 i++;
             }
         }
@@ -246,7 +246,7 @@ void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX
     else
         printf("\nErro ao abrir o arquivo!\n");
 }
-*/
+
 void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //X
     
     char copia_linha[50];
@@ -434,7 +434,7 @@ int main(){
                 printf("\nQual nome seu arquivo recebera?\n");
                 getchar();
                 scanf("%50[^\n]", nome_lista);
-                salvar_lista_em_arquivo(nome_lista, fila);
+                salvar_lista_em_arquivo(nome_lista, vetor);
                 break;
                 
             case 10:
