@@ -133,26 +133,33 @@ void inserir_posicao_n(Pessoa vetor[], int tam){// III
     informacoes(pessoa, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-/*
-void retirar_inicio(Fila *f){//IV
-    Pessoa removido;
+
+void retirar_inicio(Pessoa vetor[], int tam){//IV
     tIni = time(NULL);
-    int i = ini;
+    Pessoa removido;
+    int i = 0;
 
     if(i < fim){
         removido = vetor[i];
-        ini++;
-        tam_fila--;
         m_n++;
-    }else
-        printf("\nFila vazia!\n");
+        for(i; i < fim; i++){
+            vetor[i] = vetor[i + 1];
+            c_n++;
+            m_n++;
+        }
+        fim--;
+
     //ignore this
     tFim = time(NULL);
     printf("\n----ELEMENTO REMOVIDO----\n");
     informacoes(removido, c_n, m_n);
     tempo_exe(tFim, tIni);
+    
+    }
+    else
+        printf("\nFila vazia!\n");
 }
-
+/*
 void retirar_fim(Fila *f){//V
     Pessoa removido;
     tIni = time(NULL);
@@ -424,10 +431,11 @@ int main(){
             case 3:
                 inserir_posicao_n(vetor, tam);
                 break;
-            /*
+            
             case 4:
-                retirar_inicio(fila);
+                retirar_inicio(vetor, tam);
                 break;
+            /*
             case 5:
                 retirar_fim(fila);
                 break;    
