@@ -68,6 +68,10 @@ void inserir_inicio(Pessoa vetor[]){// I
         }
         vetor[0] = pessoa;
     }
+    else{
+        vetor[i] = pessoa;
+        fim++;
+    }
     m_n++;
     //ignore this
     tFim = time(NULL);
@@ -96,32 +100,37 @@ void inserir_fim(Pessoa vetor[], int tam){// II
 
 void inserir_posicao_n(Pessoa vetor[], int tam){// III
     Pessoa pessoa, aux, aux2;
-    int n, i;
-    nome_e_rg(&pessoa);
-    printf("\nQual posicao deseja inserir? \n");
-    scanf("%d", &n);
-    tIni = time(NULL);
-    i = n;
-    if(fim < tam){   
-        fim++;    
-        aux = vetor[i - 1];
-        while(i < fim){
-            aux2 = vetor[i];
-            vetor[i] = aux;
-            aux = aux2;
-            i++;
-            c_n++;
-            m_n+= 3;
+    int n, i, j = 0;
+    
+    if(j < fim){
+        nome_e_rg(&pessoa);
+        printf("\nQual posicao deseja inserir? \n");
+        scanf("%d", &n);
+        i = n;
+        tIni = time(NULL);
+        if(fim < tam){   
+            fim++;    
+            aux = vetor[i - 1];
+            while(i < fim){
+                aux2 = vetor[i];
+                vetor[i] = aux;
+                aux = aux2;
+                i++;
+                c_n++;
+                m_n+= 3;
+            }
+            vetor[n - 1] = pessoa;
+            m_n+= 2;
+            //ignore this
+            tFim = time(NULL);
+            informacoes(pessoa, c_n, m_n);
+            tempo_exe(tFim, tIni);
         }
-        vetor[n - 1] = pessoa;
-        m_n+= 2;
+        else
+            printf("\nFila cheia!\n");
     }
     else
-        printf("\nFila cheia!\n");
-    //ignore this
-    tFim = time(NULL);
-    informacoes(pessoa, c_n, m_n);
-    tempo_exe(tFim, tIni);
+        printf("\nLista vazia");
 }
 
 void retirar_inicio(Pessoa vetor[]){//IV
@@ -191,7 +200,6 @@ void retirar_posicao_n(Pessoa vetor[]){//VI
     informacoes(removido, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-
 
 void procurar_rg(Pessoa vetor[]){//XII
     int rg, i = 0;
@@ -350,31 +358,18 @@ int tam_arquivo(){
     switch(opcao_arq){
     case 'a':
         return 30;
-    break;
     case 'b':
         return 80;
-    break;
-
     case 'c':
         return 130;
-    break;
-
     case 'd':
         return 1030;
-    break;
-
     case 'e':
         return 10030;
-    break;
-
     case 'f':
         return 1000030;
-    break;
-
     case 'g':
         return 13000030;
-    break;
-
     default:
         if(opcao_arq < 'a' || opcao_arq > 103)
             printf("Opcao invalida!");
@@ -382,17 +377,14 @@ int tam_arquivo(){
     }
 }
 
-
 int main(){
 
-    
-    long int tam = tam_arquivo();
+    int tam = tam_arquivo();
     Pessoa *vetor = (Pessoa *)malloc(tam * sizeof(Pessoa));
     char file_name[50] = {};
     char nome_lista[50] = {};
     int opcao;
     
-
         do
         {        
             menu_opcoes();
