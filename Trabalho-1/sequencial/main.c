@@ -159,15 +159,14 @@ void retirar_inicio(Pessoa vetor[], int tam){//IV
     else
         printf("\nFila vazia!\n");
 }
-/*
-void retirar_fim(Fila *f){//V
+
+void retirar_fim(Pessoa vetor[], int tam){//V
     Pessoa removido;
     tIni = time(NULL);
-    if(ini < fim){
+    int i = 0;
+    if(i < fim){
         removido = vetor[fim -1];
         fim--;
-        tam_fila--;
-        m_n++;
     }
     else
         printf("\nErro ao retirar do fim, fila vazia!\n");
@@ -176,7 +175,7 @@ void retirar_fim(Fila *f){//V
     informacoes(removido, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-
+/*
 void retirar_posicao_n(Fila *f){//VI
     Pessoa removido, aux, prox;
     int i = ini, n;
@@ -435,10 +434,11 @@ int main(){
             case 4:
                 retirar_inicio(vetor, tam);
                 break;
-            /*
+            
             case 5:
-                retirar_fim(fila);
-                break;    
+                retirar_fim(vetor, tam);
+                break;
+            /*
             case 6:
                 retirar_posicao_n(fila);
                 break;
