@@ -6,21 +6,14 @@
 int c_n, m_n;
 char opcao2;
 char opcao_arq;
+int fim = 0;
+
 time_t tIni, tFim;
 
 typedef struct{
     char nome[17];
     char rg[9];
 } Pessoa;
-
-typedef struct
-{
-    int fim;
-    int ini;
-    int tam;
-    int tam_fila;
-    Pessoa *vetor;
-}Fila;
 
 void cn_mn(int cn, int mn){
     c_n = 0, m_n = 0;
@@ -45,21 +38,6 @@ void verificar_enter_rg(Pessoa *rg){
     }
 }
 
-Fila* criar_fila(int tamanho){
-    Fila* f = (Fila *)malloc(sizeof(Fila));
-    f->fim = 0;
-    f->ini = 0;
-    f->tam = tamanho;
-    f->tam_fila = 0;
-    f->vetor = (Pessoa *)malloc(tamanho * sizeof(Pessoa));
-    return f;
-}
-
-void destruir_fila(Fila *f){
-    free(f->vetor);
-    free(f);
-}
-
 void nome_e_rg(Pessoa *p){
 
     printf("\nDigite o nome: ");
@@ -81,36 +59,32 @@ void informacoes(Pessoa pessoa, int cn, int mn){
     cn_mn(cn, mn); 
 }
 
-void inserir_inicio(Fila *f){// I
-    Pessoa pessoa, aux, ant;
-    int i = f->ini;
+void inserir_inicio(Pessoa vetor[], int tam){// I
+    Pessoa pessoa, aux, aux2;
+    int i = 0;
     nome_e_rg(&pessoa);
     tIni = time(NULL);
-    if(i < f->tam){
-        aux = f->vetor[i];
-        f->vetor[i] = pessoa;
-        i++;
-        ant = f->vetor[i];
-        f->vetor[i] = aux;
-        i++;
-        f->fim++;
-        m_n+= 4;
-        while(i <= f->fim){
-            aux = ant;
-            ant = f->vetor[i];
-            f->vetor[i] = aux;
+
+    if(i < tam){
+        fim++;
+        aux = vetor[i];
+        while(i <= fim){ 
+            aux2 = vetor[i + 1];
+            vetor[i + 1] = aux;
+            aux = aux2;
             i++;
             c_n++;
-            m_n+= 3;
+            m_n += 3;
         }
-        f->tam_fila++;
+        vetor[0] = pessoa;
     }
+    m_n++;
     //ignore this
     tFim = time(NULL);
     informacoes(pessoa, c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-
+/*
 void inserir_fim(Fila *f){// II
     Pessoa pessoa;
 
@@ -261,21 +235,21 @@ void procurar_rg(Fila *f){//XII
     cn_mn(c_n, m_n);
     tempo_exe(tFim, tIni);
 }
-
-void imprimir_fila(Fila *f){ //XIII
-    printf("\n-------FILA TAM: %d------\n", f->tam_fila);
-    int i = f->ini;
+*/
+void imprimir_fila(Pessoa vetor[]){ //XIII
+    printf("\n-------FILA TAM: %d------\n", fim);
+    int i = 0;
     tIni = time(NULL);
-    while(i < f->fim){
-        printf("\nNome: %s\nRG: %s\n", f->vetor[i].nome, f->vetor[i].rg);
+    while(i < fim){
+        printf("\nNome: %s\nRG: %s\n", vetor[i].nome, vetor[i].rg);
         i++;
     }
-    printf("\n-----FIM FILA TAM: %d-----\n", f->tam_fila);
+    printf("\n-----FIM FILA TAM: %d-----\n", fim);
     tFim = time(NULL);
 
     tempo_exe(tFim, tIni);
 }
-
+/*
 void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX
     FILE *arquivo = fopen(nome_lista, "w");
     int i = f->ini;
@@ -294,8 +268,8 @@ void salvar_lista_em_arquivo(char nome_lista[], Fila *f){//IX
     else
         printf("\nErro ao abrir o arquivo!\n");
 }
-
-void ler_arquivo_e_inserir(char file[], Fila *f){ //X
+*/
+void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //X
     
     char copia_linha[50];
     char linha_completa[50];
@@ -316,10 +290,9 @@ void ler_arquivo_e_inserir(char file[], Fila *f){ //X
 
             verificar_enter_rg(&pessoa);
 
-            if(f->fim < f->tam){
-                f->vetor[f->fim] = pessoa;
-                (f->fim)++;
-                (f->tam_fila)++;
+            if(fim < tam){
+                vetor[fim] = pessoa;
+                fim++;
             }
             else
                 printf("\nFila cheia!\n");
@@ -433,14 +406,13 @@ int tam_arquivo(){
 int main(){
 
     
-    int tamanho = tam_arquivo();
-    Fila *fila = criar_fila(tamanho);
+    int tam = tam_arquivo();
+    Pessoa vetor[tam];
     char file_name[50] = {};
     char nome_lista[50] = {};
     int opcao;
     
 
-    if(fila){
         do
         {        
             menu_opcoes();
@@ -449,9 +421,9 @@ int main(){
             switch (opcao)
             {
             case 1:
-                inserir_inicio(fila);
+                inserir_inicio(vetor, tam);
                 break;
-            case 2:
+            /*case 2:
                 inserir_fim(fila); 
                 break;
             case 3:
@@ -469,18 +441,21 @@ int main(){
             case 7:
                 procurar_rg(fila);
                 break;
+            */
             case 8:
-                imprimir_fila(fila);  
+                imprimir_fila(vetor);  
                 break;
+            /*
             case 9:
                 printf("\nQual nome seu arquivo recebera?\n");
                 getchar();
                 scanf("%50[^\n]", nome_lista);
                 salvar_lista_em_arquivo(nome_lista, fila);
                 break;
+                */
             case 10:
                 opcao_arquivo(file_name);
-                ler_arquivo_e_inserir(file_name, fila);
+                ler_arquivo_e_inserir(file_name, vetor, tam);
                 break;
             case 11:
                 exit(0);
@@ -491,10 +466,6 @@ int main(){
             mostrar_menu();
             system("clear");
         } while (opcao2 != 'n' && opcao2 != 'N');
-    }
-    else
-        printf("\nErro ao alocar memoria!\n");
-    destruir_fila(fila);
 
     return 0;
 }
