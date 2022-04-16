@@ -235,28 +235,22 @@ void menu_ordenar(){
 
 void selection_sort(Pessoa vetor[]){ //h) I.
     tIni = time(NULL);
-    int i = 0, j, menor;
-    Pessoa troca;
+    int i = 0, j;
+    Pessoa aux;
     
     if(i < fim){
         for(i; i < fim - 1; i++){
-            menor = i;
-            c_n++;
-            m_n++;
             for(j = i + 1; j < fim; j++){
-                if(vetor[j].rg < vetor[menor].rg){
-                   menor = j;
-                   c_n++;
-                   m_n++;
+                if(vetor[i].rg > vetor[j].rg){
+                    aux = vetor[i];
+                    vetor[i] = vetor[j];
+                    vetor[j] = aux;
+                    m_n+= 3;
+                    c_n++;
                 }
-            }
-            if(i != menor){
-                troca = vetor[i];
-                vetor[i] = vetor[menor];
-                vetor[menor] = troca; 
                 c_n++;
-                m_n+= 3;
             }
+            c_n++;
         }
         printf("\nLista ordenada com sucesso!\n\n");
         cn_mn(c_n, m_n);
@@ -266,7 +260,6 @@ void selection_sort(Pessoa vetor[]){ //h) I.
     else
         printf("\nLista vazia!");
 }
-
 
 void imprimir_fila(Pessoa vetor[]){ //i
     printf("\n-------FILA TAM: %d------\n", fim);
