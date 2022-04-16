@@ -235,24 +235,28 @@ void menu_ordenar(){
 
 void selection_sort(Pessoa vetor[]){ //h) I.
     tIni = time(NULL);
-    Pessoa aux;
-    int i = 0, j = 1;
+    int i = 0, j, menor;
+    Pessoa troca;
     
     if(i < fim){
-        while(i < fim){
-            while(j < fim){
-                if(vetor[i].rg > vetor[j].rg){
-                    aux = vetor[i];
-                    vetor[i] = vetor[j];
-                    vetor[j] = aux;
-                    m_n+= 3;
-                }
-                j++;
-                c_n++;
-            }
-            i++;
-            j = i + 1;
+        for(i; i < fim - 1; i++){
+            menor = i;
             c_n++;
+            m_n++;
+            for(j = i + 1; j < fim; j++){
+                if(vetor[j].rg < vetor[menor].rg){
+                   menor = j;
+                   c_n++;
+                   m_n++;
+                }
+            }
+            if(i != menor){
+                troca = vetor[i];
+                vetor[i] = vetor[menor];
+                vetor[menor] = troca; 
+                c_n++;
+                m_n+= 3;
+            }
         }
         printf("\nLista ordenada com sucesso!\n\n");
         cn_mn(c_n, m_n);
