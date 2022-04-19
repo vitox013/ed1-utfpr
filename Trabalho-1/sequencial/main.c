@@ -4,8 +4,8 @@
 #include <time.h>
 
 int c_n, m_n;
-char opcao2;
 char opcao_arq;
+char opcao;
 int fim = 0;
 
 time_t tIni, tFim;
@@ -243,6 +243,7 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
             menor = i;
             c_n++; m_n++;
             for(j = i + 1; j < fim; j++){
+                c_n++;
                 if(vetor[j].rg < vetor[menor].rg){
                    menor = j;
                    c_n++; m_n++;
@@ -262,6 +263,32 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
     }
     else
         printf("\nLista vazia!");
+}
+
+void insertion_sort(Pessoa vetor[]){
+    tIni = time(NULL);
+    Pessoa copia;
+    int j, i = 0;
+
+    if(i < fim){
+        for(i = 1; i < fim; i++){
+            copia = vetor[i];
+            c_n++; m_n++;
+            for(j = i; (j > 0) && (vetor[j - 1].rg > copia.rg); j--){
+                vetor[j] = vetor[j - 1];
+                c_n++; m_n++;
+            }
+            vetor[j] = copia;
+            m_n++;
+        }
+        //ignore this
+        printf("\nLista ordenada com sucesso!\n\n");
+        cn_mn(c_n, m_n);
+        tFim = time(NULL);
+        tempo_exe(tFim, tIni);
+    }
+    else
+        printf("\nNao eh possivel ordenar uma fila vazia!");
 }
 
 void imprimir_fila(Pessoa vetor[]){ //i
@@ -347,12 +374,12 @@ void menu_opcoes(){
     printf("i) - Mostrar lista na tela\n");
     printf("j) - Salvar a lista em um arquivo\n");
     printf("k) - Ler a lista de um arquivo\n");
-    printf("\n0 - Sair\n\n");
+    printf("\nz - Sair\n\n");
 }
 
 void mostrar_menu(){
     printf("\n\nMostrar menu de opcoes? S para sim - N para nao(encerrar): ");
-    scanf(" %c", &opcao2);
+    scanf(" %c", &opcao);
 }
 
 void opcao_arquivo(char *nome){
@@ -426,7 +453,6 @@ int main(){
     Pessoa *vetor = (Pessoa *)malloc(tam * sizeof(Pessoa));
     char file_name[50] = {};
     char nome_lista[50] = {};
-    char opcao;
     int opcao_ord;
     
         do
@@ -472,6 +498,9 @@ int main(){
                 case 1:
                     selection_sort(vetor);
                     break;
+                case 2:
+                    insertion_sort(vetor);
+                    break;
                 default:
                     printf("\nOpcao invalida!");
                     break;
@@ -492,16 +521,16 @@ int main(){
                 opcao_arquivo(file_name);
                 ler_arquivo_e_inserir(file_name, vetor, tam);
                 break;
-            case 11:
+            case 'z':
                 break;
             default:
                 printf("\nOpcao invalida! Digite novamente!\n");
                 break;
             }
-            if(opcao != 0)
-                mostrar_menu();
+            if(opcao != 'z' && opcao != 'n' && opcao != 'N')
+                mostrar_menu(opcao);
             system("clear");
-        } while (opcao != 0 && opcao2 != 'n' && opcao2 != 'N');
+        } while (opcao != 'z' && opcao != 'n' && opcao != 'N');
     free(vetor);
     return 0;
 }
