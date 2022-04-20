@@ -251,12 +251,12 @@ void imprimir_vetor_ordem(int vet_ordem[]){
 
 void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos eficiente
     tIni = time(NULL);
-    int i = 0, j, menor, troca2, vet_ordem[fim], ind;
+    int i = 0, j, menor, troca2, vet_ordem[fim];
     Pessoa troca;
 
     if(i < fim){
         preencher_vetor_ordem(vet_ordem);
-        printf("\nOrdem do vetor:\ni= 0  ");
+        printf("\nOrdem do vetor:\ni= 0 | ");
         imprimir_vetor_ordem(vet_ordem);
         for(i; i < fim - 1; i++){
             menor = i; 
@@ -278,7 +278,7 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
                 troca2 = vet_ordem[i];
                 vet_ordem[i] = vet_ordem[menor];
                 vet_ordem[menor] = troca2;
-                printf("i= %d  ", i + 1); 
+                printf("i= %d | ", i + 1); 
                 imprimir_vetor_ordem(vet_ordem);
             }
         }
@@ -294,17 +294,24 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
 void insertion_sort(Pessoa vetor[]){
     tIni = time(NULL);
     Pessoa copia;
-    int j, i = 0;
+    int j, i = 0, vet_ordem[fim];
 
     if(i < fim){
+        preencher_vetor_ordem(vet_ordem);
+        printf("\nOrdem do vetor:\ni= 1 |  ");
+        imprimir_vetor_ordem(vet_ordem);
         for(i = 1; i < fim; i++){
             copia = vetor[i];
             c_n++; m_n++;
             for(j = i; (j > 0) && (vetor[j - 1].rg > copia.rg); j--){
                 vetor[j] = vetor[j - 1];
-                c_n++; m_n++;
+                vet_ordem[j] = vet_ordem[j - 1];
+                c_n++; m_n++; 
             }
             vetor[j] = copia;
+            vet_ordem[j] = i;
+            printf("i= %d |  ", i + 1);
+            imprimir_vetor_ordem(vet_ordem);
             m_n++;
         }
         //ignore this
