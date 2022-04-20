@@ -8,6 +8,7 @@ char opcao_arq;
 char opcao;
 int fim = 0;
 
+
 time_t tIni, tFim;
 
 typedef struct{
@@ -233,14 +234,32 @@ void menu_ordenar(){
     printf("6 - Merge Sort\n\n");
 }
 
+void preencher_vetor_ordem(int vet_ordem[]){
+    int i = 0;
+    for(i; i < fim; i++){
+        vet_ordem[i] = i;
+    }
+} 
+
+void imprimir_vetor_ordem(int vet_ordem[]){
+    int j;
+    for(j = 0; j < fim; j++){
+        printf("%d ", vet_ordem[j]);
+    }
+    printf("\n");
+}
+
 void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos eficiente
     tIni = time(NULL);
-    int i = 0, j, menor;
+    int i = 0, j, menor, troca2, vet_ordem[fim], ind;
     Pessoa troca;
-    
+
     if(i < fim){
+        preencher_vetor_ordem(vet_ordem);
+        printf("\nOrdem do vetor:\ni= 0  ");
+        imprimir_vetor_ordem(vet_ordem);
         for(i; i < fim - 1; i++){
-            menor = i;
+            menor = i; 
             c_n++; m_n++;
             for(j = i + 1; j < fim; j++){
                 c_n++;
@@ -252,11 +271,18 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
             if(i != menor){
                 troca = vetor[i];
                 vetor[i] = vetor[menor];
-                vetor[menor] = troca; 
-                c_n++; m_n+= 3;
+                vetor[menor] = troca;
+                 c_n++; m_n+= 3;
+
+                //vet_ordem 
+                troca2 = vet_ordem[i];
+                vet_ordem[i] = vet_ordem[menor];
+                vet_ordem[menor] = troca2;
+                printf("i= %d  ", i + 1); 
+                imprimir_vetor_ordem(vet_ordem);
             }
         }
-        printf("\nLista ordenada com sucesso!\n\n");
+        printf("\nLista ordenada com sucesso!\n");
         cn_mn(c_n, m_n);
         tFim = time(NULL);
         tempo_exe(tFim, tIni);
@@ -456,7 +482,8 @@ int main(){
     int opcao_ord;
     
         do
-        {        
+        {       
+            system("clear");
             menu_opcoes();
             scanf(" %c", &opcao);
             getchar();
@@ -493,7 +520,7 @@ int main(){
             case 'h':
                 menu_ordenar();
                 scanf("%d", &opcao_ord);
-
+                system("clear");
                 switch (opcao_ord){
                 case 1:
                     selection_sort(vetor);
