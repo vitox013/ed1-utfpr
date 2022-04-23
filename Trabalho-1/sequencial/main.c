@@ -324,6 +324,51 @@ void insertion_sort(Pessoa vetor[]){
         printf("\nNao eh possivel ordenar uma fila vazia!");
 }
 
+void merge(Pessoa vet[], int inicio, int meio, int fim){
+    Pessoa *temp;
+    int p1, p2, tamanho, i, j, k;
+    int fim1 = 1, fim2 = 1;
+    tamanho = fim - inicio + 1;
+    p1 = inicio;
+    p2 = meio + 1;
+    temp = (Pessoa *) malloc(tamanho * sizeof(Pessoa));
+
+    if(temp){
+        for(i = 0; i < tamanho; i++){
+            if(fim1 && fim2){
+                if(vet[p1].rg < vet[p2].rg)
+                    temp[i] = vet[p1++];
+                else
+                    temp[i] = vet[p2++];
+                
+                if(p1 > meio) fim1 = 0;
+                if(p2 > fim) fim2 = 0;
+            }
+            else{
+                if(fim1)
+                    temp[i] = vet[p1++];
+                else
+                    temp[i] = vet[p2++];
+            }
+        }
+        for(j = 0, k = inicio; j < tamanho; j++, k++)
+            vet[k] = temp[j];
+    }
+    free(temp);
+}
+
+void merge_sort(Pessoa vet[], int inicio, int fim){
+    int meio;
+    if(inicio < fim - 1){
+        meio = (inicio + fim)/2;
+        merge_sort(vet, inicio, meio);
+        merge_sort(vet, meio+1, fim);
+        merge(vet, inicio, meio, fim);
+    }
+}
+
+
+
 void imprimir_fila(Pessoa vetor[]){ //i
     printf("\n-------FILA TAM: %d------\n", fim);
     int i = 0;
@@ -534,6 +579,9 @@ int main(){
                     break;
                 case 2:
                     insertion_sort(vetor);
+                    break;
+                case 6:
+                    merge_sort(vetor, 0, fim-1);
                     break;
                 default:
                     printf("\nOpcao invalida!");
