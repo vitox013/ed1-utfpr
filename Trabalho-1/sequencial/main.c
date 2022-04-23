@@ -325,49 +325,66 @@ void insertion_sort(Pessoa vetor[]){
 }
 
 void merge(Pessoa vet[], int inicio, int meio, int fim){
-    Pessoa *temp;
-    int p1, p2, tamanho, i, j, k;
+    int p1, p2, tam, i, j, k;
     int fim1 = 1, fim2 = 1;
-    tamanho = fim - inicio + 1;
-    p1 = inicio;
-    p2 = meio + 1;
-    temp = (Pessoa *) malloc(tamanho * sizeof(Pessoa));
+    Pessoa *temp;
+    p1 = inicio; 
+    p2 = meio+1;
+    tam = fim - inicio + 1;
+    temp = (Pessoa*) malloc(tam * sizeof(Pessoa));
 
     if(temp){
-        for(i = 0; i < tamanho; i++){
+        c_n++;
+        for(i = 0; i < tam;i++){ 
+            c_n++; m_n++;
             if(fim1 && fim2){
-                if(vet[p1].rg < vet[p2].rg)
+                c_n++;
+                if(vet[p1].rg < vet[p2].rg){    //combinando e ordenando
                     temp[i] = vet[p1++];
-                else
+                    c_n++; m_n++;
+                }
+                else{
                     temp[i] = vet[p2++];
-                
-                if(p1 > meio) fim1 = 0;
-                if(p2 > fim) fim2 = 0;
+                    c_n++; m_n++;
+                }
+                if(p1 > meio){                  //verificando flag que indica se o p1 ou p2 chegou ao fim do vetor
+                    fim1 = 0;
+                    c_n++; m_n++;
+                }
+                if(p2 > fim){
+                    fim2 = 0;
+                    c_n++; m_n++;
+                }
             }
             else{
-                if(fim1)
+                c_n++;
+                if(fim1){                       //copiando o que sobrou 
                     temp[i] = vet[p1++];
-                else
+                    c_n++; m_n++;
+                }
+                else{
                     temp[i] = vet[p2++];
+                    c_n++; m_n++;
+                }
             }
         }
-        for(j = 0, k = inicio; j < tamanho; j++, k++)
+        for(j = 0, k = inicio; j < tam; j++, k++){  //copiando do vetor auxiliar para o original
             vet[k] = temp[j];
+            c_n++; m_n++;
+        }
+        free(temp);
     }
-    free(temp);
 }
 
 void merge_sort(Pessoa vet[], int inicio, int fim){
     int meio;
-    if(inicio < fim - 1){
-        meio = (inicio + fim)/2;
+    if(inicio < fim){
+        meio = (inicio + fim) / 2;
         merge_sort(vet, inicio, meio);
-        merge_sort(vet, meio+1, fim);
+        merge_sort(vet, meio + 1, fim);
         merge(vet, inicio, meio, fim);
     }
 }
-
-
 
 void imprimir_fila(Pessoa vetor[]){ //i
     printf("\n-------FILA TAM: %d------\n", fim);
@@ -581,7 +598,12 @@ int main(){
                     insertion_sort(vetor);
                     break;
                 case 6:
+                    tIni = time(NULL);
                     merge_sort(vetor, 0, fim-1);
+                    tFim = time(NULL);
+                    cn_mn(c_n, m_n);
+                    tempo_exe(tFim, tIni);
+                    printf("\n\nLista ordenada com sucesso!");
                     break;
                 default:
                     printf("\nOpcao invalida!");
