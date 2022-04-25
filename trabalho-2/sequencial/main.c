@@ -268,19 +268,17 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
                    c_n++; m_n++;
                 }
             }
-            if(i != menor){
-                troca = vetor[i];
-                vetor[i] = vetor[menor];
-                vetor[menor] = troca;
-                 c_n++; m_n+= 3;
+            troca = vetor[i];
+            vetor[i] = vetor[menor];
+            vetor[menor] = troca;
+                c_n++; m_n+= 3;
 
-                //vet_ordem 
-                troca2 = vet_ordem[i];
-                vet_ordem[i] = vet_ordem[menor];
-                vet_ordem[menor] = troca2;
-                printf("i= %d | ", i + 1); 
-                imprimir_vetor_ordem(vet_ordem);
-            }
+            //vet_ordem 
+            troca2 = vet_ordem[i];
+            vet_ordem[i] = vet_ordem[menor];
+            vet_ordem[menor] = troca2;
+            printf("i= %d | ", i + 1); 
+            imprimir_vetor_ordem(vet_ordem);   
         }
         printf("\nLista ordenada com sucesso!\n");
         cn_mn(c_n, m_n);
@@ -305,10 +303,12 @@ void insertion_sort(Pessoa vetor[]){
             c_n++; m_n++;
             for(j = i; (j > 0) && (vetor[j - 1].rg > copia.rg); j--){
                 vetor[j] = vetor[j - 1];
-                vet_ordem[j] = vet_ordem[j - 1];
+                vet_ordem[j] = vet_ordem[j - 1]; //ignore
                 c_n++; m_n++; 
             }
             vetor[j] = copia;
+
+            //ignore
             vet_ordem[j] = i;
             printf("i= %d |  ", i + 1);
             imprimir_vetor_ordem(vet_ordem);
@@ -322,16 +322,6 @@ void insertion_sort(Pessoa vetor[]){
     }
     else
         printf("\nNao eh possivel ordenar uma fila vazia!");
-}
-
-void merge_sort(Pessoa vet[], int inicio, int fim){
-    int meio;
-    if(inicio < fim){
-        meio = (inicio + fim) / 2;
-        merge_sort(vet, inicio, meio);
-        merge_sort(vet, meio + 1, fim);
-        merge(vet, inicio, meio, fim);
-    }
 }
 
 void merge(Pessoa vet[], int inicio, int meio, int fim){
@@ -383,6 +373,16 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){
             c_n++; m_n++;
         }
         free(temp);
+    }
+}
+
+void merge_sort(Pessoa vet[], int inicio, int fim){
+    int meio;
+    if(inicio < fim){
+        meio = (inicio + fim) / 2;
+        merge_sort(vet, inicio, meio);
+        merge_sort(vet, meio + 1, fim);
+        merge(vet, inicio, meio, fim);
     }
 }
 
