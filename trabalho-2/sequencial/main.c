@@ -325,11 +325,11 @@ void insertion_sort(Pessoa vetor[]){
 }
 
 void merge(Pessoa vet[], int inicio, int meio, int fim){
-    int p1, p2, tam, i, j, k;
-    int fim1 = 1, fim2 = 1;
+    int l, r, tam, i, j, k;
+    int fimL = 1, fimR = 1;
     Pessoa *temp;
-    p1 = inicio; 
-    p2 = meio+1;
+    l = inicio; 
+    r = meio+1;
     tam = fim - inicio + 1;
     temp = (Pessoa*) malloc(tam * sizeof(Pessoa));
 
@@ -337,33 +337,33 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){
         c_n++;
         for(i = 0; i < tam;i++){ 
             c_n++; m_n++;
-            if(fim1 && fim2){
+            if(fimL && fimR){
                 c_n++;
-                if(vet[p1].rg < vet[p2].rg){    //combinando e ordenando
-                    temp[i] = vet[p1++];
+                if(vet[l].rg < vet[r].rg){    //combinando e ordenando
+                    temp[i] = vet[l++];
                     c_n++; m_n++;
                 }
                 else{
-                    temp[i] = vet[p2++];
+                    temp[i] = vet[r++];
                     c_n++; m_n++;
                 }
-                if(p1 > meio){                  //verificando flag que indica se o p1 ou p2 chegou ao fim do vetor
-                    fim1 = 0;
+                if(l > meio){                  //verificando flag que indica se o l ou r chegou ao fim do vetor
+                    fimL = 0;
                     c_n++; m_n++;
                 }
-                if(p2 > fim){
-                    fim2 = 0;
+                if(r > fim){
+                    fimR = 0;
                     c_n++; m_n++;
                 }
             }
             else{
                 c_n++;
-                if(fim1){                       //copiando o que sobrou 
-                    temp[i] = vet[p1++];
+                if(fimL){                       //copiando o que sobrou 
+                    temp[i] = vet[l++];
                     c_n++; m_n++;
                 }
                 else{
-                    temp[i] = vet[p2++];
+                    temp[i] = vet[r++];
                     c_n++; m_n++;
                 }
             }
