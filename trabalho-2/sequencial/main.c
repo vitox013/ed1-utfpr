@@ -324,6 +324,16 @@ void insertion_sort(Pessoa vetor[]){
         printf("\nNao eh possivel ordenar uma fila vazia!");
 }
 
+void merge_sort(Pessoa vet[], int inicio, int fim){
+    int meio;
+    if(inicio < fim){
+        meio = (inicio + fim) / 2;
+        merge_sort(vet, inicio, meio);
+        merge_sort(vet, meio + 1, fim);
+        merge(vet, inicio, meio, fim);
+    }
+}
+
 void merge(Pessoa vet[], int inicio, int meio, int fim){
     int l, r, tam, i, j, k;
     int fimL = 1, fimR = 1;
@@ -373,16 +383,6 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){
             c_n++; m_n++;
         }
         free(temp);
-    }
-}
-
-void merge_sort(Pessoa vet[], int inicio, int fim){
-    int meio;
-    if(inicio < fim){
-        meio = (inicio + fim) / 2;
-        merge_sort(vet, inicio, meio);
-        merge_sort(vet, meio + 1, fim);
-        merge(vet, inicio, meio, fim);
     }
 }
 
