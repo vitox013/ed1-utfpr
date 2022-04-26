@@ -234,31 +234,13 @@ void menu_ordenar(){
     printf("6 - Merge Sort\n\n");
 }
 
-void preencher_vetor_ordem(int vet_ordem[]){
-    int i = 0;
-    for(i; i < fim; i++){
-        vet_ordem[i] = i;
-    }
-} 
-
-void imprimir_vetor_ordem(int vet_ordem[]){
-    int j;
-    for(j = 0; j < fim; j++){
-        printf("%d ", vet_ordem[j]);
-    }
-    printf("\n");
-}
-
 void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos eficiente
     tIni = time(NULL);
-    int i = 0, j, menor, troca2, vet_ordem[fim];
+    int i = 0, j, menor, k;
     Pessoa troca;
 
     if(i < fim){
-        preencher_vetor_ordem(vet_ordem);
-        printf("\nOrdem do vetor:\ni= 0 | ");
-        imprimir_vetor_ordem(vet_ordem);
-        for(i; i < fim - 1; i++){
+        while( i < fim - 1){
             menor = i; 
             c_n++; m_n++;
             for(j = i + 1; j < fim; j++){
@@ -271,14 +253,14 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
             troca = vetor[i];
             vetor[i] = vetor[menor];
             vetor[menor] = troca;
-                c_n++; m_n+= 3;
+            c_n++; m_n+= 3;  
 
-            //vet_ordem 
-            troca2 = vet_ordem[i];
-            vet_ordem[i] = vet_ordem[menor];
-            vet_ordem[menor] = troca2;
-            printf("i= %d | ", i + 1); 
-            imprimir_vetor_ordem(vet_ordem);   
+            //mostrar movimentacao
+            for(k = 0; k < fim; k++){
+                printf("%s\t", vetor[k].nome);
+            }
+            printf("\n");
+            i++;
         }
         printf("\nLista ordenada com sucesso!\n");
         cn_mn(c_n, m_n);
@@ -292,27 +274,22 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
 void insertion_sort(Pessoa vetor[]){
     tIni = time(NULL);
     Pessoa copia;
-    int j, i = 0, vet_ordem[fim];
+    int j, i = 0, k;
 
     if(i < fim){
-        preencher_vetor_ordem(vet_ordem);
-        printf("\nOrdem do vetor:\ni= 1 |  ");
-        imprimir_vetor_ordem(vet_ordem);
         for(i = 1; i < fim; i++){
             copia = vetor[i];
             c_n++; m_n++;
             for(j = i; (j > 0) && (vetor[j - 1].rg > copia.rg); j--){
                 vetor[j] = vetor[j - 1];
-                vet_ordem[j] = vet_ordem[j - 1]; //ignore
                 c_n++; m_n++; 
             }
             vetor[j] = copia;
-
-            //ignore
-            vet_ordem[j] = i;
-            printf("i= %d |  ", i + 1);
-            imprimir_vetor_ordem(vet_ordem);
             m_n++;
+            for(k = 0; k < fim; k++){
+                printf("%s\t", vetor[k].nome);
+            }
+            printf("\n");
         }
         //ignore this
         printf("\nLista ordenada com sucesso!\n\n");
@@ -616,8 +593,8 @@ int main(){
             
             case 'j':
                 printf("\nQual nome seu arquivo recebera?\n");
-                getchar();
                 scanf("%50[^\n]", nome_lista);
+                getchar();
                 salvar_lista_em_arquivo(nome_lista, vetor);
                 break;
                 
