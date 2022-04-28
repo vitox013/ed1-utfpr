@@ -224,14 +224,7 @@ void procurar_rg(Pessoa vetor[]){//g
 }
 
 void menu_ordenar(){
-
-    printf("\nQual forma de ordenar? \n");
-    printf("1 - Selection Sort\n");
-    printf("2 - Insertion-Sort\n");
-    printf("3 - Bubble-Sort\n");
-    printf("4 - Shell-Sort\n");
-    printf("5 - Quick-Sort\n");
-    printf("6 - Merge Sort\n\n");
+    printf("\nQual forma de ordenar? \n1 - Selection Sort\n2 - Insertion-Sort\n3 - Bubble-Sort\n4 - Shell-Sort\n5 - Quick-Sort\n6 - Merge Sort\n\n");
 }
 
 void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos eficiente
@@ -271,7 +264,7 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
         printf("\nLista vazia!");
 }
 
-void insertion_sort(Pessoa vetor[]){
+void insertion_sort(Pessoa vetor[]){ //h) II.
     tIni = time(NULL);
     Pessoa copia;
     int j, i = 0, k;
@@ -301,7 +294,7 @@ void insertion_sort(Pessoa vetor[]){
         printf("\nNao eh possivel ordenar uma fila vazia!");
 }
 
-void merge(Pessoa vet[], int inicio, int meio, int fim){
+void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
     int l, r, tam, i, j, k;
     int fimL = 1, fimR = 1;
     Pessoa *temp;
@@ -353,7 +346,7 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){
     }
 }
 
-void merge_sort(Pessoa vet[], int inicio, int fim){
+void merge_sort(Pessoa vet[], int inicio, int fim){ //h) VI.
     int meio;
     if(inicio < fim){
         meio = (inicio + fim) / 2;
@@ -435,18 +428,7 @@ void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //k
 
 void menu_opcoes(){
     
-    printf("\n\na) - Inserir no INICIO\n");
-    printf("b) - Inserir um no no FINAL\n");
-    printf("c) - Inserir um no na POSICAO N\n");
-    printf("d) - Retirar um no do INICIO\n");
-    printf("e) - Retirar um no do FIM\n");
-    printf("f) - Retirar um no na POSICAO N\n");
-    printf("g) - Procurar no por RG\n");
-    printf("h) - Ordenar\n");
-    printf("i) - Mostrar lista na tela\n");
-    printf("j) - Salvar a lista em um arquivo\n");
-    printf("k) - Ler a lista de um arquivo\n");
-    printf("\nz - Sair\n\n");
+    printf("\n\na) - Inserir no INICIO\nb) - Inserir um no no FINAL\nc) - Inserir um no na POSICAO N\nd) - Retirar um no do INICIO\ne) - Retirar um no do FIM\nf) - Retirar um no na POSICAO N\ng) - Procurar no por RG\nh) - Ordenar\ni) - Mostrar lista na tela\nj) - Salvar a lista em um arquivo\nk) - Ler a lista de um arquivo\n\nz - Sair\n\n");
 }
 
 void mostrar_menu(){
@@ -455,67 +437,74 @@ void mostrar_menu(){
 }
 
 void opcao_arquivo(char *nome){
+    
+    while(opcao_arq < 'a' || opcao_arq > 103){
+        switch(opcao_arq){
+    
+        case 'a':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG10.txt");
+        break;
 
-    switch(opcao_arq){
-    case 'a':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG10.txt");
-    break;
+        case 'b':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG50.txt");
+        break;
 
-    case 'b':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG50.txt");
-    break;
+        case 'c':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG100.txt");
+        break;
 
-    case 'c':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG100.txt");
-    break;
+        case 'd':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG1K.txt");
+        break;
 
-    case 'd':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG1K.txt");
-    break;
+        case 'e':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG10K.txt");
+        break;
 
-    case 'e':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG10K.txt");
-    break;
+        case 'f':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG1M.txt");
+        break;
 
-    case 'f':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG1M.txt");
-    break;
+        case 'g':
+            strcpy(nome, "/home/vitor/filesED1/NomeRG100M.txt");
+        break;
 
-    case 'g':
-        strcpy(nome, "/home/vitor/filesED1/NomeRG100M.txt");
-    break;
-
-    default:
-        if(opcao_arq < 'a' || opcao_arq > 103)
-            printf("Opcao invalida!");
-    break;
+        default:
+            if(opcao_arq < 'a' || opcao_arq > 103)
+                printf("Opcao invalida!");
+        break;
+        }
     }
 }
 
 int tam_arquivo(){
 
-    printf("\nQual arquivo voce vai utilizar?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
-    scanf(" %c", &opcao_arq);
+    while(opcao_arq < 'a' || opcao_arq > 103){
+        printf("\nQual arquivo voce vai utilizar?\na) NomeRG10.txt\nb) NomeRG50.txt\nc) NomeRG100.txt\nd) NomeRG1K.txt\ne) NomeRG10K.txt\nf) NomeRG1M.txt\ng) NomeRG100M.txt\n\n");
+        scanf(" %c", &opcao_arq);
 
-    switch(opcao_arq){
-    case 'a':
-        return 30;
-    case 'b':
-        return 80;
-    case 'c':
-        return 130;
-    case 'd':
-        return 1030;
-    case 'e':
-        return 10030;
-    case 'f':
-        return 1000030;
-    case 'g':
-        return 13000030;
-    default:
-        if(opcao_arq < 'a' || opcao_arq > 103)
-            printf("Opcao invalida!");
-    break;
+        switch(opcao_arq){
+        case 'a':
+            return 30;
+        case 'b':
+            return 80;
+        case 'c':
+            return 130;
+        case 'd':
+            return 1030;
+        case 'e':
+            return 10030;
+        case 'f':
+            return 1000030;
+        case 'g':
+            return 13000030;
+        default:
+            if(opcao_arq < 'a' || opcao_arq > 103){
+                system("clear");
+                printf("Opcao invalida!\n");
+            }
+        break;
+        }
     }
 }
 
@@ -527,8 +516,7 @@ int main(){
     char nome_lista[50] = {};
     int opcao_ord;
     
-        do
-        {       
+        do{       
             system("clear");
             menu_opcoes();
             scanf(" %c", &opcao);
@@ -539,14 +527,15 @@ int main(){
             case 'a':
                 inserir_inicio(vetor);
                 break;
+
             case 'b':
                 inserir_fim(vetor, tam); 
-                break;
-            
+                break;  
+
             case 'c':
                 inserir_posicao_n(vetor, tam);
-                break;
-            
+                break;   
+
             case 'd':
                 retirar_inicio(vetor);
                 break;
@@ -571,9 +560,11 @@ int main(){
                 case 1:
                     selection_sort(vetor);
                     break;
+
                 case 2:
                     insertion_sort(vetor);
                     break;
+
                 case 6:
                     tIni = time(NULL);
                     merge_sort(vetor, 0, fim-1);
@@ -582,11 +573,13 @@ int main(){
                     tempo_exe(tFim, tIni);
                     printf("\n\nLista ordenada com sucesso!");
                     break;
+
                 default:
                     printf("\nOpcao invalida!");
                     break;
                 }
                 break;
+
             case 'i':
                 imprimir_fila(vetor);  
                 break;
