@@ -338,10 +338,13 @@ void shell_sort(Pessoa vet[]){ //h) IV.
             }
             h /= 2;
         }
+        printf("Lista ordenada com sucesso!\n");
         cn_mn(c_n, m_n);
         tFim = time(NULL);
         tempo_exe(tFim, tIni);
     }
+    else
+        printf("Impossivel ordenar uma lista vazia!");
 }
 
 void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
