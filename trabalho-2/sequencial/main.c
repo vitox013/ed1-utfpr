@@ -318,6 +318,32 @@ void bubble_sort(Pessoa vet[]){ //h) III.
         printf("\nImpossivel ordenar lista vazia!\n");
 }
 
+void shell_sort(Pessoa vet[]){ //h) IV.
+    tIni = time(NULL);
+    int h, i = 0, j;
+    Pessoa aux;
+    h = (fim - 1) / 2;
+    if(i < fim){
+        while(h > 0){ c_n++;
+            for(i = h; i < fim; i++){ c_n++; m_n+=2;
+                aux = vet[i];
+                j = i;
+                while(j >= h && aux.rg < vet[j - h].rg){ c_n++; m_n+=2;
+                    vet[j] = vet[j - h];
+                    j = j - h;
+                }
+                if(vet[j].rg != aux.rg){ c_n++; m_n++;
+                    vet[j] = aux;
+                }
+            }
+            h /= 2;
+        }
+        cn_mn(c_n, m_n);
+        tFim = time(NULL);
+        tempo_exe(tFim, tIni);
+    }
+}
+
 void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
     int l, r, tam, i, j, k;
     int fimL = 1, fimR = 1;
@@ -590,6 +616,9 @@ int main(){
                 
                 case 3:
                     bubble_sort(vet);
+                    break;
+                case 4:
+                    shell_sort(vet);
                     break;
                 case 6:
                     tIni = time(NULL);
