@@ -50,7 +50,7 @@ void informacoes(Pessoa pessoa, int cn, int mn){
     cn_mn(cn, mn); 
 }
 
-void inserir_inicio(Pessoa vetor[]){// a
+void inserir_inicio(Pessoa vet[]){// a
     Pessoa pessoa, aux, aux2;
     int i = 0;
     nome_e_rg(&pessoa);
@@ -58,19 +58,19 @@ void inserir_inicio(Pessoa vetor[]){// a
 
     if(i < fim){
         fim++;
-        aux = vetor[i];
+        aux = vet[i];
         while(i <= fim){ 
-            aux2 = vetor[i + 1];
-            vetor[i + 1] = aux;
+            aux2 = vet[i + 1];
+            vet[i + 1] = aux;
             aux = aux2;
             i++;
             c_n++;
             m_n += 3;
         }
-        vetor[0] = pessoa;
+        vet[0] = pessoa;
     }
     else{
-        vetor[i] = pessoa;
+        vet[i] = pessoa;
         fim++;
     }
     m_n++;
@@ -80,13 +80,13 @@ void inserir_inicio(Pessoa vetor[]){// a
     tempo_exe(tFim, tIni);
 }
 
-void inserir_fim(Pessoa vetor[], int tam){// b
+void inserir_fim(Pessoa vet[], int tam){// b
     Pessoa pessoa;
 
     nome_e_rg(&pessoa);
     tIni = time(NULL);
     if(fim < tam){
-        vetor[fim] = pessoa;
+        vet[fim] = pessoa;
         fim++;
         c_n++;
         m_n++;
@@ -99,7 +99,7 @@ void inserir_fim(Pessoa vetor[], int tam){// b
     tempo_exe(tFim, tIni);
 }
 
-void inserir_posicao_n(Pessoa vetor[], int tam){// c
+void inserir_posicao_n(Pessoa vet[], int tam){// c
     Pessoa pessoa, aux, aux2;
     int n, i, j = 0;
     
@@ -111,16 +111,16 @@ void inserir_posicao_n(Pessoa vetor[], int tam){// c
         tIni = time(NULL);
         if(fim < tam){   
             fim++;    
-            aux = vetor[i - 1];
+            aux = vet[i - 1];
             while(i < fim){
-                aux2 = vetor[i];
-                vetor[i] = aux;
+                aux2 = vet[i];
+                vet[i] = aux;
                 aux = aux2;
                 i++;
                 c_n++;
                 m_n+= 3;
             }
-            vetor[n - 1] = pessoa;
+            vet[n - 1] = pessoa;
             m_n+= 2;
             //ignore this
             tFim = time(NULL);
@@ -134,15 +134,15 @@ void inserir_posicao_n(Pessoa vetor[], int tam){// c
         printf("\nLista vazia");
 }
 
-void retirar_inicio(Pessoa vetor[]){//d
+void retirar_inicio(Pessoa vet[]){//d
     tIni = time(NULL);
     Pessoa removido;
     int i = 0;
 
     if(i < fim){
-        removido = vetor[i];
+        removido = vet[i];
         while( i < fim){
-            vetor[i] = vetor[i + 1];
+            vet[i] = vet[i + 1];
             c_n++;
             m_n++;
             i++;
@@ -160,12 +160,12 @@ void retirar_inicio(Pessoa vetor[]){//d
         printf("\nFila vazia!\n");
 }
 
-void retirar_fim(Pessoa vetor[]){//e
+void retirar_fim(Pessoa vet[]){//e
     Pessoa removido;
     tIni = time(NULL);
     int i = 0;
     if(i < fim){
-        removido = vetor[fim -1];
+        removido = vet[fim -1];
         fim--;
     }
     else
@@ -176,7 +176,7 @@ void retirar_fim(Pessoa vetor[]){//e
     tempo_exe(tFim, tIni);
 }
 
-void retirar_posicao_n(Pessoa vetor[]){//f
+void retirar_posicao_n(Pessoa vet[]){//f
     Pessoa removido;
     int n;
 
@@ -185,9 +185,9 @@ void retirar_posicao_n(Pessoa vetor[]){//f
     
     tIni = time(NULL);
     if(n < fim){
-        removido = vetor[n - 1];
+        removido = vet[n - 1];
         while(n < fim){
-            vetor[n - 1] = vetor[n];
+            vet[n - 1] = vet[n];
             n++;
             c_n++;
             m_n++;
@@ -202,7 +202,7 @@ void retirar_posicao_n(Pessoa vetor[]){//f
     tempo_exe(tFim, tIni);
 }
 
-void procurar_rg(Pessoa vetor[]){//g
+void procurar_rg(Pessoa vet[]){//g
     int rg, i = 0;
 
     printf("\nDigite o RG que esta procurando: ");
@@ -211,9 +211,9 @@ void procurar_rg(Pessoa vetor[]){//g
 
     while(i < fim){
         c_n++;
-        if(vetor[i].rg == rg){
+        if(vet[i].rg == rg){
         printf("\nPessoa encontrada na %d posicao!\n", i + 1);
-        printf("Nome: %s\n\n", vetor[i].nome);
+        printf("Nome: %s\n\n", vet[i].nome);
         break;
         }
         i++;
@@ -227,7 +227,7 @@ void menu_ordenar(){
     printf("\nQual forma de ordenar? \n1 - Selection Sort\n2 - Insertion-Sort\n3 - Bubble-Sort\n4 - Shell-Sort\n5 - Quick-Sort\n6 - Merge Sort\n\n");
 }
 
-void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos eficiente
+void selection_sort(Pessoa vet[]){ //h) I. //git checkout 5776755  -- menos eficiente
     tIni = time(NULL);
     int i = 0, j, menor, k;
     Pessoa troca;
@@ -238,19 +238,19 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
             c_n++; m_n++;
             for(j = i + 1; j < fim; j++){
                 c_n++;
-                if(vetor[j].rg < vetor[menor].rg){
+                if(vet[j].rg < vet[menor].rg){
                    menor = j;
                    c_n++; m_n++;
                 }
             }
-            troca = vetor[i];
-            vetor[i] = vetor[menor];
-            vetor[menor] = troca;
+            troca = vet[i];
+            vet[i] = vet[menor];
+            vet[menor] = troca;
             c_n++; m_n+= 3;  
 
             //mostrar movimentacao
             for(k = 0; k < fim; k++){
-                printf("%s\t", vetor[k].nome);
+                printf("%s\t", vet[k].nome);
             }
             printf("\n");
             i++;
@@ -264,23 +264,23 @@ void selection_sort(Pessoa vetor[]){ //h) I. //git checkout 5776755  -- menos ef
         printf("\nLista vazia!");
 }
 
-void insertion_sort(Pessoa vetor[]){ //h) II.
+void insertion_sort(Pessoa vet[]){ //h) II.
     tIni = time(NULL);
     Pessoa copia;
     int j, i = 0, k;
 
     if(i < fim){
         for(i = 1; i < fim; i++){
-            copia = vetor[i];
+            copia = vet[i];
             c_n++; m_n++;
-            for(j = i; (j > 0) && (vetor[j - 1].rg > copia.rg); j--){
-                vetor[j] = vetor[j - 1];
+            for(j = i; (j > 0) && (vet[j - 1].rg > copia.rg); j--){
+                vet[j] = vet[j - 1];
                 c_n++; m_n++; 
             }
-            vetor[j] = copia;
+            vet[j] = copia;
             m_n++;
             for(k = 0; k < fim; k++){
-                printf("%s\t", vetor[k].nome);
+                printf("%s\t", vet[k].nome);
             }
             printf("\n");
         }
@@ -292,6 +292,30 @@ void insertion_sort(Pessoa vetor[]){ //h) II.
     }
     else
         printf("\nNao eh possivel ordenar uma fila vazia!");
+}
+
+void bubble_sort(Pessoa vet[]){ //h) III.
+    tIni = time(NULL);
+    Pessoa troca;
+    int i = 0, j;
+
+    if(i < fim){
+        for(i = 0; i < fim - 1; i++){ c_n++;
+            for(j = 0; j < fim - 1; j++){ c_n++;
+                if(vet[j].rg > vet[j+1].rg){ c_n++; m_n++;
+                    troca = vet[j+1];
+                    vet[j+1] = vet[j];
+                    vet[j] = troca;
+                }
+            }
+        }
+        printf("\nLista ordenada com sucesso!\n");
+        tFim = time(NULL);
+        cn_mn(c_n, m_n);
+        tempo_exe(tFim, tIni);
+    }
+    else
+        printf("\nImpossivel ordenar lista vazia!\n");
 }
 
 void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
@@ -317,7 +341,7 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
                     temp[i] = vet[r++];
                     c_n++; m_n++;
                 }
-                if(l > meio){                  //verificando flag que indica se o l ou r chegou ao fim do vetor
+                if(l > meio){                  //verificando flag que indica se o l ou r chegou ao fim do vet
                     fimL = 0;
                     c_n++; m_n++;
                 }
@@ -338,7 +362,7 @@ void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
                 }
             }
         }
-        for(j = 0, k = inicio; j < tam; j++, k++){  //copiando do vetor auxiliar para o original
+        for(j = 0, k = inicio; j < tam; j++, k++){  //copiando do vet auxiliar para o original
             vet[k] = temp[j];
             c_n++; m_n++;
         }
@@ -356,12 +380,12 @@ void merge_sort(Pessoa vet[], int inicio, int fim){ //h) VI.
     }
 }
 
-void imprimir_fila(Pessoa vetor[]){ //i
+void imprimir_fila(Pessoa vet[]){ //i
     printf("\n-------FILA TAM: %d------\n", fim);
     int i = 0;
     tIni = time(NULL);
     while(i < fim){
-        printf("\nNome: %s\nRG: %d\n", vetor[i].nome, vetor[i].rg);
+        printf("\nNome: %s\nRG: %d\n", vet[i].nome, vet[i].rg);
         i++;
     }
     printf("\n-----FIM FILA TAM: %d-----\n", fim);
@@ -370,14 +394,14 @@ void imprimir_fila(Pessoa vetor[]){ //i
     tempo_exe(tFim, tIni);
 }
 
-void salvar_lista_em_arquivo(char nome_lista[], Pessoa vetor[]){//j
+void salvar_lista_em_arquivo(char nome_lista[], Pessoa vet[]){//j
     FILE *arquivo = fopen(nome_lista, "w");
     int i = 0;
 
     if(arquivo){
         if(i < fim){
             while(i < fim){
-                fprintf(arquivo,"%s,%d\n", vetor[i].nome, vetor[i].rg);
+                fprintf(arquivo,"%s,%d\n", vet[i].nome, vet[i].rg);
                 i++;
             }
         }
@@ -389,7 +413,7 @@ void salvar_lista_em_arquivo(char nome_lista[], Pessoa vetor[]){//j
         printf("\nErro ao abrir o arquivo!\n");
 }
 
-void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //k
+void ler_arquivo_e_inserir(char file[], Pessoa vet[], int tam){ //k
     
     char copia_linha[50];
     char linha_completa[50];
@@ -413,7 +437,7 @@ void ler_arquivo_e_inserir(char file[], Pessoa vetor[], int tam){ //k
             pessoa.rg = strtol(rg2, NULL, 10);
 
             if(fim < tam){
-                vetor[fim] = pessoa;
+                vet[fim] = pessoa;
                 fim++;
             }
             else
@@ -438,7 +462,7 @@ void mostrar_menu(){
 
 void opcao_arquivo(char *nome){
     
-    while(opcao_arq < 'a' || opcao_arq > 103){
+
         switch(opcao_arq){
     
         case 'a':
@@ -474,7 +498,6 @@ void opcao_arquivo(char *nome){
                 printf("Opcao invalida!");
         break;
         }
-    }
 }
 
 int tam_arquivo(){
@@ -511,7 +534,7 @@ int tam_arquivo(){
 int main(){
 
     int tam = tam_arquivo();
-    Pessoa *vetor = (Pessoa *)malloc(tam * sizeof(Pessoa));
+    Pessoa *vet = (Pessoa *)malloc(tam * sizeof(Pessoa));
     char file_name[50] = {};
     char nome_lista[50] = {};
     int opcao_ord;
@@ -525,31 +548,31 @@ int main(){
             switch (opcao)
             {
             case 'a':
-                inserir_inicio(vetor);
+                inserir_inicio(vet);
                 break;
 
             case 'b':
-                inserir_fim(vetor, tam); 
+                inserir_fim(vet, tam); 
                 break;  
 
             case 'c':
-                inserir_posicao_n(vetor, tam);
+                inserir_posicao_n(vet, tam);
                 break;   
 
             case 'd':
-                retirar_inicio(vetor);
+                retirar_inicio(vet);
                 break;
             
             case 'e':
-                retirar_fim(vetor);
+                retirar_fim(vet);
                 break;
             
             case 'f':
-                retirar_posicao_n(vetor);
+                retirar_posicao_n(vet);
                 break;
             
             case 'g':
-                procurar_rg(vetor);
+                procurar_rg(vet);
                 break;
 
             case 'h':
@@ -558,16 +581,19 @@ int main(){
                 system("clear");
                 switch (opcao_ord){
                 case 1:
-                    selection_sort(vetor);
+                    selection_sort(vet);
                     break;
 
                 case 2:
-                    insertion_sort(vetor);
+                    insertion_sort(vet);
                     break;
-
+                
+                case 3:
+                    bubble_sort(vet);
+                    break;
                 case 6:
                     tIni = time(NULL);
-                    merge_sort(vetor, 0, fim-1);
+                    merge_sort(vet, 0, fim-1);
                     tFim = time(NULL);
                     cn_mn(c_n, m_n);
                     tempo_exe(tFim, tIni);
@@ -581,19 +607,19 @@ int main(){
                 break;
 
             case 'i':
-                imprimir_fila(vetor);  
+                imprimir_fila(vet);  
                 break;
             
             case 'j':
                 printf("\nQual nome seu arquivo recebera?\n");
                 scanf("%50[^\n]", nome_lista);
                 getchar();
-                salvar_lista_em_arquivo(nome_lista, vetor);
+                salvar_lista_em_arquivo(nome_lista, vet);
                 break;
                 
             case 'k':
                 opcao_arquivo(file_name);
-                ler_arquivo_e_inserir(file_name, vetor, tam);
+                ler_arquivo_e_inserir(file_name, vet, tam);
                 break;
             case 'z':
                 break;
@@ -605,6 +631,6 @@ int main(){
                 mostrar_menu(opcao);
             system("clear");
         } while (opcao != 'z' && opcao != 'n' && opcao != 'N');
-    free(vetor);
+    free(vet);
     return 0;
 }
