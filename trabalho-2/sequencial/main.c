@@ -347,6 +347,42 @@ void shell_sort(Pessoa vet[]){ //h) IV.
         printf("Impossivel ordenar uma lista vazia!");
 }
 
+void quick_sort(Pessoa vet[], int ini, int fim){
+    int i = 0, j, pivo;
+    Pessoa aux;
+
+    if(i < fim){
+        i = ini;
+        j = fim;
+        pivo = vet[(ini + fim) / 2].rg;
+
+        do{
+            while(vet[i].rg < pivo){ c_n++;
+                i+= 1;
+            }
+            while(vet[j].rg > pivo){ c_n++;
+                j-= 1;
+            }
+            if(i <= j){ c_n++; m_n+= 3;
+                aux = vet[i];
+                vet[i] = vet[j];
+                vet[j] = aux;
+                i+= 1;
+                j-= 1;
+            }
+        } while (i < j);
+
+        if(j > ini){ c_n++;
+            quick_sort(vet, ini, j);
+        }
+        if (i < fim){ c_n++;
+            quick_sort(vet, i, fim);
+        }
+    }
+    else
+        printf("Impossivel ordenar lista vazia!\n");
+}
+
 void merge(Pessoa vet[], int inicio, int meio, int fim){ //h) VI.
     int l, r, tam, i, j, k;
     int fimL = 1, fimR = 1;
@@ -622,6 +658,14 @@ int main(){
                     break;
                 case 4:
                     shell_sort(vet);
+                    break;
+                case 5:
+                    tIni = time(NULL);
+                    quick_sort(vet, 0, fim-1);
+                    tFim = time(NULL);
+                    cn_mn(c_n, m_n);
+                    tempo_exe(tFim, tIni);
+                    printf("\n\nLista ordenada com sucesso!");
                     break;
                 case 6:
                     tIni = time(NULL);
