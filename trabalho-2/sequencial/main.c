@@ -489,7 +489,7 @@ void ler_arquivo_e_inserir(char file[], Pessoa vet[], int tam){ //k
     char linha_completa[50];
     Pessoa pessoa;
     char *rg;
-    char rg2[9];
+    char rg2[10];
     FILE *arquivo = fopen(file, "r");
 
     if(arquivo){
