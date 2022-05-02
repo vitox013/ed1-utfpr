@@ -3,6 +3,11 @@
 #include <string.h>
 #include <time.h>
 
+#ifdef __unix__
+
+#else
+    #define OS_Windows
+#endif
 int c_n, m_n;
 char opcao_arq;
 char opcao;
@@ -484,7 +489,7 @@ void ler_arquivo_e_inserir(char file[], Pessoa vet[], int tam){ //k
     char linha_completa[50];
     Pessoa pessoa;
     char *rg;
-    char rg2[9];
+    char rg2[10];
     FILE *arquivo = fopen(file, "r");
 
     if(arquivo){
@@ -531,31 +536,31 @@ void opcao_arquivo(char *nome){
         switch(opcao_arq){
     
         case 'a':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG10.txt");
+            strcpy(nome, "filesEd1/NomeRG10.txt");
         break;
 
         case 'b':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG50.txt");
+            strcpy(nome, "filesEd1/NomeRG50.txt");
         break;
 
         case 'c':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG100.txt");
+            strcpy(nome, "filesEd1/NomeRG100.txt");
         break;
 
         case 'd':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG1K.txt");
+            strcpy(nome, "filesEd1/NomeRG1K.txt");
         break;
 
         case 'e':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG10K.txt");
+            strcpy(nome, "filesEd1/NomeRG10K.txt");
         break;
 
         case 'f':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG1M.txt");
+            strcpy(nome, "filesEd1/NomeRG1M.txt");
         break;
 
         case 'g':
-            strcpy(nome, "/home/vitor/filesED1/NomeRG100M.txt");
+            strcpy(nome, "filesEd1/NomeRG100M.txt");
         break;
 
         default:
@@ -588,7 +593,12 @@ int tam_arquivo(){
             return 13000030;
         default:
             if(opcao_arq < 'a' || opcao_arq > 103){
-                system("clear");
+
+                 #ifdef OS_Windows
+                    system("cls");
+                #else
+                    system("clear");
+                #endif
                 printf("Opcao invalida!\n");
             }
         break;
@@ -604,12 +614,20 @@ int main(){
     char nome_lista[50] = {};
     int opcao_ord;
     
-        do{       
-            system("clear");
+        do{   
+            #ifdef OS_Windows
+                system("cls");
+            #else
+                system("clear");
+            #endif
             menu_opcoes();
             scanf(" %c", &opcao);
             getchar();
-            system("clear");
+            #ifdef OS_Windows
+                system("cls");
+            #else
+                system("clear");
+            #endif
             switch (opcao)
             {
             case 'a':
@@ -643,7 +661,11 @@ int main(){
             case 'h':
                 menu_ordenar();
                 scanf("%d", &opcao_ord);
-                system("clear");
+                #ifdef OS_Windows
+                    system("cls");
+                #else
+                    system("clear");
+                #endif
                 switch (opcao_ord){
                 case 1:
                     selection_sort(vet);
@@ -705,7 +727,11 @@ int main(){
             }
             if(opcao != 'z' && opcao != 'n' && opcao != 'N')
                 mostrar_menu(opcao);
-            system("clear");
+            #ifdef OS_Windows
+                system("cls");
+            #else
+                system("clear");
+            #endif
         } while (opcao != 'z' && opcao != 'n' && opcao != 'N');
     free(vet);
     return 0;
