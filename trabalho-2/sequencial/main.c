@@ -358,17 +358,17 @@ void quick_sort(Pessoa vet[], int ini, int fim){
 
         do{
             while(vet[i].rg < pivo){ c_n++;
-                i+= 1;
+                i++;
             }
             while(vet[j].rg > pivo){ c_n++;
-                j-= 1;
+                j--;
             }
             if(i <= j){ c_n++; m_n+= 3;
                 aux = vet[i];
                 vet[i] = vet[j];
                 vet[j] = aux;
-                i+= 1;
-                j-= 1;
+                i++;
+                j--;
             }
         } while (i < j);
 
