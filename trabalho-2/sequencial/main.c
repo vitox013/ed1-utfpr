@@ -38,7 +38,6 @@ void tempo_exe(int tFim, int tIni){
 void nome_e_rg(Pessoa *p){
 
     printf("\nDigite o nome: ");
-    getchar();
     scanf("%20[^\n]",p->nome);
     getchar();
     printf("\nDigite o RG (8 digitos): ");
@@ -207,18 +206,17 @@ void retirar_posicao_n(Pessoa vet[]){//f
     tempo_exe(tFim, tIni);
 }
 
-void procurar_rg(Pessoa vet[]){//g
-    int rg, i = 0;
+void procurar_rg(Pessoa vet[], int rg){//g
+    int i = 0;
 
-    printf("\nDigite o RG que esta procurando: ");
-    scanf("%d", &rg);
+    
     tIni = time(NULL);
 
     while(i < fim){
         c_n++;
         if(vet[i].rg == rg){
-        printf("\nPessoa encontrada na %d posicao!\n", i + 1);
-        printf("Nome: %s\n\n", vet[i].nome);
+            printf("\nPessoa encontrada na %d posicao!\n", i + 1);
+            printf("Nome: %s\n\n", vet[i].nome);
         break;
         }
         i++;
@@ -226,6 +224,27 @@ void procurar_rg(Pessoa vet[]){//g
     tFim = time(NULL);
     cn_mn(c_n, m_n);
     tempo_exe(tFim, tIni);
+}
+
+int busca_binaria(Pessoa vet[], int rg,int fim){
+    
+    int meio, inicio = 0;
+
+    while(inicio <= fim){ c_n++;
+        meio = (inicio + fim) / 2; m_n++;
+        if(vet[meio].rg == rg){ c_n++;
+            return printf("\nPessoa encontrada na %d posicao = indice %d do vetor!\n", meio + 1, meio);
+        }
+        else{ 
+            if(rg < vet[meio].rg){ c_n++;
+                fim = meio - 1; m_n++;
+            }
+            else{
+                inicio = meio + 1; m_n++;
+            }
+        }
+    }
+    return printf("\nElemento nao existe!\n");
 }
 
 void menu_ordenar(){
@@ -612,7 +631,7 @@ int main(){
     Pessoa *vet = (Pessoa *)malloc(tam * sizeof(Pessoa));
     char file_name[50] = {};
     char nome_lista[50] = {};
-    int opcao_ord;
+    int opcao_ord, opcao_busc, rg;
     
         do{   
             #ifdef OS_Windows
@@ -655,7 +674,23 @@ int main(){
                 break;
             
             case 'g':
-                procurar_rg(vet);
+                printf("\n1. Usando busca SEQUENCIAL\n2. Usando busca BINARIA\n");
+                scanf("%d", &opcao_busc);
+
+                printf("\nDigite o RG que esta procurando: ");
+                scanf("%d", &rg);
+                if(opcao_busc == 1){
+                    procurar_rg(vet, rg);
+                }
+                else if(opcao_busc == 2){
+                    tIni = time(NULL);
+                    busca_binaria(vet, rg, fim);
+                    tFim = time(NULL);
+                    cn_mn(c_n, m_n);
+                    tempo_exe(tFim, tIni);
+                }
+                else
+                    printf("Opcao invalida!\n");
                 break;
 
             case 'h':
