@@ -271,12 +271,6 @@ void selection_sort(Pessoa vet[]){ //h) I. //git checkout 5776755  -- menos efic
             vet[i] = vet[menor];
             vet[menor] = troca;
             c_n++; m_n+= 3;  
-
-            //mostrar movimentacao
-            for(k = 0; k < fim; k++){
-                printf("%s\t", vet[k].nome);
-            }
-            printf("\n");
             i++;
         }
         printf("\nLista ordenada com sucesso!\n");
@@ -303,10 +297,6 @@ void insertion_sort(Pessoa vet[]){ //h) II.
             }
             vet[j] = copia;
             m_n++;
-            for(k = 0; k < fim; k++){
-                printf("%s\t", vet[k].nome);
-            }
-            printf("\n");
         }
         //ignore this
         printf("\nLista ordenada com sucesso!\n\n");
