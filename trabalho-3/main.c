@@ -75,3 +75,5 @@ int main(){
     
     return 0;
 }
+
+//while ((tmp != ' ') && (tmp != ',') && (tmp != '-') && (tmp != '?') && (tmp != ':') && (tmp != '.') && (tmp != '!') && (tmp != '"'))
