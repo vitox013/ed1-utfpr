@@ -129,15 +129,8 @@ int main(){
             formar_palavras(historia, palavras, indices);
             break;
         case 'b':
-            // for(int i = 0; i < tam; i++){
-            //     printf("%s", palavras[i].palavra);
-            // }
+            system("clear");
             criar_arquivo_invertido(palavras, indices);
-            break;
-        case 'c':
-            for(int i = 0; i < 5750; i++){
-                printf("%c", historia[i]);
-            }
             break;
         }
     }while (opcao != 'e');
