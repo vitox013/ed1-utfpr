@@ -7,10 +7,12 @@ int tam = 0;
 
 typedef struct {
     char palavra[40];
+    int ind;
 }P;
 
-void guardar_palavra(P palavras[], int i, char word[]){
+void guardar_palavra(P palavras[], int i, char word[], int ind){
     word[i] = '\0';
+    palavras[tam].ind = ind;
     strcpy(palavras[tam].palavra,word);
     tam++;
 }
@@ -37,15 +39,15 @@ void ler_arquivo(char historia[]){
     fclose(file);
 }
 
-void formar_palavras(char historia[], P palavras[], int indices[]){
+void formar_palavras(char historia[], P palavras[]){
     int j = 0, i;
     char word[20];
-    int indice, char_apos_pt = 0;
+    int ind, char_apos_pt = 0;
     char letra;
     
     while(historia[j] != '\0'){
         i = 0;
-        indice = j;
+        ind = j;
         if(!char_apos_pt)
             letra = historia[j];
         while((letra >= 65 && letra <= 90) || (letra >= 97 && letra <= 122) || ((letra == '-') && (historia[j + 1] >= 97 && historia[j + 1] <= 122))){ //vericando se é uma letra ou uma palavra com hifen
@@ -57,18 +59,16 @@ void formar_palavras(char historia[], P palavras[], int indices[]){
         if(letra == ' '){  //verificando se apos a letra é um espaco e inserindo esse espaco junto com a palavra
             word[i] = ' ';
             i++;
-            indices[tam] = indice;
-            guardar_palavra(palavras, i, word);
+            guardar_palavra(palavras, i, word, ind);
             char_apos_pt = 0;
             j++;
         }
         else{
             if(historia[j - 1] != ' ') //verificando se antes da pontuacao há um espaco
-                indices[tam] = indice;
-                guardar_palavra(palavras, i, word);
+                guardar_palavra(palavras, i, word, ind);
             i = 0;
             while ((letra < 65 || letra > 90) && (letra < 97 || letra > 122)){ //enquanto nao for uma letra
-                indice = j;
+                ind = j;
                 word[i] = letra;
                 j++;
                 letra = historia[j]; 
@@ -77,26 +77,24 @@ void formar_palavras(char historia[], P palavras[], int indices[]){
                     break;
                 }
                 if((letra != ' ') && ((letra < 65 || letra > 90) && (letra < 97 || letra > 122))){ //verificando se o prox char é diferente de espaco e nao é uma letra
-                    indices[tam] = indice;
-                    guardar_palavra(palavras, i, word);
+                    guardar_palavra(palavras, i, word, ind);
                     i = 0;  
                 }else if((letra >= 65 && letra <= 90) || (letra >= 97 && letra <= 122)){    //caso apos o ' ' seja um char a flag char_apos_pt = 1 para n ir pra prox letra
                     char_apos_pt = 1;
                 }
             }
-            indices[tam] = indice;
-            guardar_palavra(palavras, i, word);
+            guardar_palavra(palavras, i, word, ind);
         }
     }
 }
 
-void criar_arquivo_invertido(P palavras[], int indices[]){//j
+void criar_arquivo_invertido(P palavras[]){//j
     FILE *arquivo = fopen("arquivo_invertido.txt", "w");
     int i = 0;
 
     if(arquivo){
         for(i; i < tam; i++){
-            fprintf(arquivo,"%s %d\n", palavras[i].palavra, indices[i]);
+            fprintf(arquivo,"%s %d\n", palavras[i].palavra, palavras[i].ind);
         }   
         fclose(arquivo);
     }
@@ -104,18 +102,14 @@ void criar_arquivo_invertido(P palavras[], int indices[]){//j
         printf("\nErro ao abrir o arquivo!\n");  
 }
     
-
-
 void menu_opcoes(){
     printf("\na - Ler um arquivo texto\nb - Apresentar o arquivo invertido\nc - Procurar uma palavra.\n\n");
 }
 
+
 int main(){
-    char* historia;
-    historia = (char*) malloc(6000 * sizeof(char));
-    char opcao;
+    char historia[6000], opcao;
     P palavras[1500];
-    int indices[1500];
     int k = 0;
     do
     {
@@ -126,16 +120,15 @@ int main(){
         case 'a':
             system("clear");
             ler_arquivo(historia);
-            formar_palavras(historia, palavras, indices);
+            formar_palavras(historia, palavras);
             break;
         case 'b':
             system("clear");
-            criar_arquivo_invertido(palavras, indices);
+            criar_arquivo_invertido(palavras);
             break;
         }
     }while (opcao != 'e');
     
-    free(historia);
     return 0;
 };
     
