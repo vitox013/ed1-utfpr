@@ -96,25 +96,6 @@ void formar_palavras(char historia[], P palavras[]){
     }
 }
 
-void criar_arquivo_invertido(Word words_u[]){
-    FILE *arquivo = fopen("arquivo_invertido.txt", "w");
-    int i = 0;
-
-    if(arquivo){
-        for(i; i <= tam2; i++){
-            fprintf(arquivo,"%s |%d\n", words_u[i].p_unica, words_u[i].freq);
-        }   
-    fclose(arquivo);
-    }
-    else
-        printf("\nErro ao abrir o arquivo!\n");  
-}
-    
-void menu_opcoes(){
-    printf("\na - Ler um arquivo texto\nb - Apresentar o arquivo invertido\nc - Procurar uma palavra.\n\n");
-}
-
-
 void palavras_unicas(P palavras[], Word words_u[]){
     int  i = 0,j;
     int res = 0;
@@ -138,15 +119,16 @@ void palavras_unicas(P palavras[], Word words_u[]){
 }
     
 void frequencia_palavras(Word words_u[], P palavras[]){
-    int i = 0, j;
+    int i = 0, j, k;
     int res;
     while(i <= tam2){
-        j = i;
+        j = i;k = 0;
         words_u[i].freq = 0;
         while (j <= tam){
             res = strcmp(words_u[i].p_unica, palavras[j].palavra);
             if(res == 0 || res == 32 || res == -32){
                 words_u[i].freq++;
+                words_u[i].pos_vet[k] = palavras[j].ind;
             }
             j++;
         }
@@ -154,11 +136,87 @@ void frequencia_palavras(Word words_u[], P palavras[]){
     }
 }
 
+void criar_arquivo_invertido(Word words_u[]){
+    FILE *arquivo = fopen("arquivo_invertido.txt", "w");
+    int i = 0;
+
+    if(arquivo){
+        for(i; i < tam2 - 1; i++){
+            fprintf(arquivo,"%s |%d\n", words_u[i].p_unica, words_u[i].freq);
+        }   
+    fclose(arquivo);
+    }
+    else
+        printf("\nErro ao abrir o arquivo!\n");  
+}
+
+Word procurar_palavra(Word words_u[]){
+    int i = 0;
+    Word palavra_procurada;
+    int res;
+    printf("Qual palavra esta procurando?\n");
+    scanf("%25[^\n]", palavra_procurada.p_unica);
+    getchar();
+    while(i < tam2){
+        res = strcmp(palavra_procurada.p_unica, words_u[i].p_unica);
+        if (res == 0 || res == 32 || res == -32)
+        {
+            return words_u[i];
+        }
+        i++;
+    }
+    palavra_procurada.freq = 0;
+    palavra_procurada.pos_vet[0] = -1;
+    return palavra_procurada;
+}
+
+void ocorrencia_palavra(Word palavra){
+    if(palavra.freq == 0)
+        printf("\nA palavra NAO aparece no texto\n");
+    else
+        printf("\nA palavra aparece %d x no texto!\n", palavra.freq);
+}
+
+void posicao_palavra_no_arquivo(Word palavra){
+    if(palavra.pos_vet[0] == -1)
+        printf("\nA palavra NAO aparece em nenhuma posicao pois ela nao esta no texto\n");
+    else
+        printf("\nA palavra aparece na posicao %d\n", palavra.pos_vet[0]);
+}
+
+void pedaco_da_frase_com_a_palavra(P palavras[], Word p_procurada){
+    int i = 0;
+    long long int res;
+    int eh_igual;
+    printf("\n");
+    while(i < tam){
+        res = strstr(palavras[i].palavra, p_procurada.p_unica) - palavras[i].palavra;
+        eh_igual = strcmp(palavras[i].palavra, p_procurada.p_unica);
+        if((res >= 0 && res < 30) && (eh_igual != 0 && eh_igual != -32 && eh_igual != 32)){
+            printf("%s ", palavras[i].palavra);
+        }
+        i++;
+    }
+    printf("\n");
+}
+
+void menu_opcoes(){
+    printf("\na - Ler um arquivo texto\nb - Apresentar o arquivo invertido\nc - Procurar uma palavra.\ne - sair\n");
+}
+
+void menu_c(int *opcao_c){
+    printf("\n1 - O numero de ocorrencias da palavra\n2 - Sua posicao N no arquivo\n3 - Algumas palavras incluindo a propria palavra. (pedacos da palavra procurada)\n0 - voltar pro menu principal.\n");
+    scanf("%d", opcao_c);
+    getchar();
+}
+
 
 int main(){
     char historia[6000], opcao;
+    int opcao_c;
     P palavras[1500];
     Word words_u[1000];
+    Word palavra_procurada;
     do
     {
         menu_opcoes();
@@ -170,11 +228,28 @@ int main(){
             ler_arquivo(historia);
             formar_palavras(historia, palavras);
             palavras_unicas(palavras, words_u);
+            frequencia_palavras(words_u, palavras);
             break;
         case 'b':
             system("clear");
-            frequencia_palavras(words_u, palavras);
             criar_arquivo_invertido(words_u);
+            break;
+        case 'c':
+            palavra_procurada = procurar_palavra(words_u);
+            do{
+                menu_c(&opcao_c);
+                switch (opcao_c){
+                case 1:
+                    ocorrencia_palavra(palavra_procurada);
+                    break;
+                case 2:
+                    posicao_palavra_no_arquivo(palavra_procurada);
+                    break;
+                case 3:
+                    pedaco_da_frase_com_a_palavra(palavras, palavra_procurada);
+                    break;
+                }
+            }while(opcao_c != 0);
             break;
         }
     }while (opcao != 'e');
