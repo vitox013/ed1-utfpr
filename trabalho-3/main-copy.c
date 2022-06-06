@@ -4,11 +4,19 @@
 #include <ctype.h>
 
 int tam = 0;
+int tam2 = 0;
 
 typedef struct {
     char palavra[40];
     int ind;
+    int ja_foi;
 }P;
+
+typedef struct {
+    char p_unica[25];
+    char pos_vet[30];
+    int x_repet;
+}Word;
 
 void guardar_palavra(P palavras[], int i, char word[], int ind){
     word[i] = '\0';
@@ -107,10 +115,39 @@ void menu_opcoes(){
 }
 
 
+void palavras_unicas(P palavras[], Word words_u[]){
+    int  i = 0,j;
+    int res = 0;
+    
+    while(i <= tam){
+        j = i + 1;
+        while(j <= tam){
+            res = strcmp(palavras[i].palavra, palavras[j].palavra);
+            if(res == 0 || res == -32 || res == 32){
+                palavras[j].ja_foi = 1;
+                break;
+            }
+            j++;
+        }
+        if(palavras[i].ja_foi == 0){
+            strcpy(words_u[tam2].p_unica,palavras[i].palavra);
+            tam2++;
+        }
+        i++;
+    }
+}
+    
+void frequencia_palavras(Word words_u[], P palavras[]){
+
+}
+
+
 int main(){
     char historia[6000], opcao;
     P palavras[1500];
+    Word words_u[1000];
     int k = 0;
+    int i = 0;
     do
     {
         menu_opcoes();
@@ -121,6 +158,7 @@ int main(){
             system("clear");
             ler_arquivo(historia);
             formar_palavras(historia, palavras);
+            palavras_unicas(palavras, words_u);
             break;
         case 'b':
             system("clear");
