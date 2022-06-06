@@ -14,8 +14,8 @@ typedef struct {
 
 typedef struct {
     char p_unica[25];
-    char pos_vet[30];
-    int x_repet;
+    int pos_vet[30];
+    int freq;
 }Word;
 
 void guardar_palavra(P palavras[], int i, char word[], int ind){
@@ -96,15 +96,15 @@ void formar_palavras(char historia[], P palavras[]){
     }
 }
 
-void criar_arquivo_invertido(P palavras[]){//j
+void criar_arquivo_invertido(Word words_u[]){
     FILE *arquivo = fopen("arquivo_invertido.txt", "w");
     int i = 0;
 
     if(arquivo){
-        for(i; i < tam; i++){
-            fprintf(arquivo,"%s %d\n", palavras[i].palavra, palavras[i].ind);
+        for(i; i <= tam2; i++){
+            fprintf(arquivo,"%s |%d\n", words_u[i].p_unica, words_u[i].freq);
         }   
-        fclose(arquivo);
+    fclose(arquivo);
     }
     else
         printf("\nErro ao abrir o arquivo!\n");  
@@ -138,7 +138,20 @@ void palavras_unicas(P palavras[], Word words_u[]){
 }
     
 void frequencia_palavras(Word words_u[], P palavras[]){
-
+    int i = 0, j;
+    int res;
+    while(i <= tam2){
+        j = i;
+        words_u[i].freq = 0;
+        while (j <= tam){
+            res = strcmp(words_u[i].p_unica, palavras[j].palavra);
+            if(res == 0 || res == 32 || res == -32){
+                words_u[i].freq++;
+            }
+            j++;
+        }
+        i++;
+    }
 }
 
 
@@ -146,8 +159,6 @@ int main(){
     char historia[6000], opcao;
     P palavras[1500];
     Word words_u[1000];
-    int k = 0;
-    int i = 0;
     do
     {
         menu_opcoes();
@@ -162,7 +173,8 @@ int main(){
             break;
         case 'b':
             system("clear");
-            criar_arquivo_invertido(palavras);
+            frequencia_palavras(words_u, palavras);
+            criar_arquivo_invertido(words_u);
             break;
         }
     }while (opcao != 'e');
