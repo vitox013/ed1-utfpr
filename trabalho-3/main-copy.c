@@ -128,7 +128,7 @@ void frequencia_palavras(Word words_u[], P palavras[]){
             res = strcmp(words_u[i].p_unica, palavras[j].palavra);
             if(res == 0 || res == 32 || res == -32){
                 words_u[i].freq++;
-                words_u[i].pos_vet[k] = palavras[j].ind;
+                words_u[i].pos_vet[k++] = palavras[j].ind;
             }
             j++;
         }
@@ -177,31 +177,35 @@ void ocorrencia_palavra(Word palavra){
         printf("\nA palavra aparece %d x no texto!\n", palavra.freq);
 }
 
-void posicao_palavra_no_arquivo(Word palavra){
+void posicao_palavra_no_arquivo(Word palavra, int i){
     if(palavra.pos_vet[0] == -1)
         printf("\nA palavra NAO aparece em nenhuma posicao pois ela nao esta no texto\n");
     else
-        printf("\nA palavra aparece na posicao %d\n", palavra.pos_vet[0]);
+        printf("\nA palavra aparece na posicao %d\n", palavra.pos_vet[i]);
 }
 
 void pedaco_da_frase_com_a_palavra(P palavras[], Word p_procurada){
     int i = 0;
     long long int res;
-    int eh_igual;
+    int eh_igual, flag = 1;
     printf("\n");
     while(i < tam){
         res = strstr(palavras[i].palavra, p_procurada.p_unica) - palavras[i].palavra;
         eh_igual = strcmp(palavras[i].palavra, p_procurada.p_unica);
         if((res >= 0 && res < 30) && (eh_igual != 0 && eh_igual != -32 && eh_igual != 32)){
             printf("%s ", palavras[i].palavra);
+            flag = 0;
         }
         i++;
+    }
+    if (flag){
+        printf("Essa palavra não aparece em outras palavras");
     }
     printf("\n");
 }
 
 void menu_opcoes(){
-    printf("\na - Ler um arquivo texto\nb - Apresentar o arquivo invertido\nc - Procurar uma palavra.\ne - sair\n");
+    printf("\na - Ler um arquivo texto\nb - Apresentar o arquivo invertido\nc - Procurar uma palavra.\nd - Proxima ocorrencia.\ne - sair\n");
 }
 
 void menu_c(int *opcao_c){
@@ -210,10 +214,16 @@ void menu_c(int *opcao_c){
     getchar();
 }
 
+void menu_d(int *opcao_d){
+    printf("\n1 - Sua posicao N no arquivo\n3 - Algumas palavras incluindo a propria palavra. (pedacos da palavra procurada)\n0 - voltar pro menu principal.\n");
+    scanf("%d", opcao_d);
+    getchar();
+}
+
 
 int main(){
     char historia[6000], opcao;
-    int opcao_c;
+    int opcao_c, opcao_d, i = 1;
     P palavras[1500];
     Word words_u[1000];
     Word palavra_procurada;
@@ -243,13 +253,27 @@ int main(){
                     ocorrencia_palavra(palavra_procurada);
                     break;
                 case 2:
-                    posicao_palavra_no_arquivo(palavra_procurada);
+                    posicao_palavra_no_arquivo(palavra_procurada, 0);
                     break;
                 case 3:
                     pedaco_da_frase_com_a_palavra(palavras, palavra_procurada);
                     break;
                 }
             }while(opcao_c != 0);
+            break;
+        case 'd':
+            do{
+                menu_d(&opcao_d);
+                switch (opcao_d){
+                case 1:
+                    printf("\nPosicao proxima ocorrencia:");
+                    posicao_palavra_no_arquivo(palavra_procurada, i++);
+                    break;
+                case 2:
+                    pedaco_da_frase_com_a_palavra(palavras, palavra_procurada);
+                    break;
+                }
+            }while(opcao_d != 0);
             break;
         }
     }while (opcao != 'e');
